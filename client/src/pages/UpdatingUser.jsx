@@ -98,14 +98,24 @@ export default function UpdatingUser() {
       }
     try {
         axios.put(`http://localhost:5000/users/${userInfo._id}`, data)
-        .then(res => setUserInfo(res.data.updatedObject))
+        .then((res) => {
+          const value = {...userInfo, 
+            name: updatedName, 
+            profileImg: ProfileImage,
+            coverImg: CoverImage,
+            flag: true,
+          }
+          setUserInfo(value)
+          setRedirect(true)
+          
+        })
         
       } 
       catch (error) {
         console.error(error);
         }
     
-        setRedirect(true)
+        
 
   }
   if(redirect){

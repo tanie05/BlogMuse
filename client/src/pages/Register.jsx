@@ -92,6 +92,9 @@ export default function Register() {
     .then((response) => {
       
         setUserInfo({...response.data.user, flag: true})
+        const value = {...response.data.user, flag: true};
+        localStorage.setItem('user', JSON.stringify(value));
+
         setRedirect(true)
 
     })

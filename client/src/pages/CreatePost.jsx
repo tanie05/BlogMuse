@@ -90,8 +90,12 @@ export default function CreatePost() {
     if(!editMode){
         //creating
         try {
-          const response = await axios.post(`http://localhost:5000/posts/${userInfo.username}`, data);
-          setRedirect(true)
+          axios.post(`http://localhost:5000/posts/${userInfo.username}`, data)
+          .then((res) => {
+            alert("Blog created")
+            setRedirect(true)
+          })
+          
         } catch (error) {
           console.error(error);
         }

@@ -23,16 +23,18 @@ position: relative;
 const Title = styled.h1`
 font-family: 'Libre Baskerville', serif;
 margin: 10px 40px;
-font-size: 60px;
-height: 150px;
+font-size: 58px;
+height: 135px;
 overflow: hidden;
+
 
 `
 const Description = styled.div`
  margin: 10px 40px;
-  font-size: 20px;
+  font-size: 21px;
   height: 50px;
   overflow: hidden;
+
   
 `
 const Author = styled.span`

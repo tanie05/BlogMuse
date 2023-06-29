@@ -3,8 +3,6 @@ import {Link, Navigate} from 'react-router-dom'
 import {UserContext} from '../UserContext'
 import styled from 'styled-components'
 import LogoComponent from './LogoComponent'
-import MainNav from './MainNav'
-
 const Container = styled.div`
   margin: 10px 50px;
   box-shadow: 10px gray;
@@ -46,8 +44,21 @@ export default function Navbar({ showNavbar }) {
 
   return (
     <Container>
-      <LogoComponent/>
-      <MainNav/>
+      <Main>
+        <Navitems to = "/">HOME</Navitems>
+      { 
+      userInfo.flag ?
+      <>
+      <Navitems to = "/profile">{userInfo.username.toUpperCase()}</Navitems>
+      <Navitems onClick={handleClick} to="/">LOGOUT</Navitems>
+      </>
+      :
+      <>
+      <Navitems to = "/login">LOGIN</Navitems>
+      <Navitems to = "/register">REGISTER</Navitems>
+      </>
+      }
+      </Main>
     </Container>
   )
 }

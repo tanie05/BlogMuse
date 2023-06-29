@@ -5,6 +5,7 @@ import Post from '../components/Post'
 import { UserContext } from '../UserContext'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import MainNav from '../components/MainNav'
 const Container = styled.div`
 
 `
@@ -56,6 +57,7 @@ const OptionButton = styled.button`
     color: #0a4423;
   }
 `;
+
 const SmallNavItems = styled(Link)`
   padding: 10px;
   color: #050505;
@@ -106,13 +108,15 @@ export default function ProfilePage() {
     return <Post item = {item} />
   }
   )
+  
 
   return (
     <div>
-      <Navbar/>
+      
+      <MainNav/>
       <Container>
         <ImageContainer>
-        <CoverPicture src = {user.coverImg} />
+        <CoverPicture src = {user.coverImg} alt='cover picture' />
         <ProfilePicture src = {user.profileImg} />
         <Username>{user.username}</Username>
         </ImageContainer>
