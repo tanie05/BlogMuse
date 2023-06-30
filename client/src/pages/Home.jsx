@@ -10,7 +10,7 @@ const Container = styled.div`
   margin: 50px;
 `
 export default function Home() {
-  
+  console.log("hey")
   const [posts,setPosts] = useState([])
 
   useEffect(() => {
