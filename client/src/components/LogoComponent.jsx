@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import {mobile} from '../responsive'
 
 const Logo = styled.div`
   
@@ -8,6 +9,12 @@ const Logo = styled.div`
   text-align: center;
   padding: 20px;
   font-family: 'Libre Baskerville', serif;
+  ${mobile({
+      fontSize: "30px",
+      margin: "0",
+      padding: "5px",
+      margin : "0"
+    })}
 `
 
 const Navitems = styled(Link)`

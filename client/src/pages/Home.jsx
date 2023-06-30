@@ -6,6 +6,8 @@ import styled from 'styled-components'
 import Post from '../components/Post'
 import baseUrl from '../appConfig'
 import { v4 as uuidv4 } from 'uuid';
+import {mobile} from '../responsive'
+
 const Container = styled.div`
   margin: 50px;
 `

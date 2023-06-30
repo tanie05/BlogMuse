@@ -1,8 +1,8 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
+import {mobile} from '../responsive'
 
-const Container = styled.div`
-    
+const Container = styled.div` 
     height: 500px;
     margin: 0px 50px;
     background-image: url('https://images.unsplash.com/photo-1485498128961-422168ba5f87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=930&q=80');
@@ -11,6 +11,11 @@ const Container = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    ${mobile({
+      width: "100vw",
+      margin : "0px 0px",
+      padding: "0",
+    })}
 `
 const Newsletter = styled.div`
     
@@ -19,6 +24,11 @@ const Newsletter = styled.div`
     text-align: center;
     height: max-content;
     padding: 50px;
+    ${mobile({
+      margin : "0px 0px",
+      fontSize : "20px",
+      width: "70vw"
+    })}
 `
 const FormInput = styled.input`
     font-family: 'Roboto';
@@ -27,6 +37,14 @@ const FormInput = styled.input`
     font-size: 20px;
     border: 1px black solid;
     border-radius: 5px;
+    ${mobile({
+      
+      margin : "0px 0px",
+      fontSize : "15px",
+      width: "70vw",
+      
+    })}
+    
 `
 const SubmitBtn = styled.input`
     font-family: 'Roboto';
@@ -38,14 +56,30 @@ const SubmitBtn = styled.input`
     border: 1px black solid;
     border-radius: 5px;
     margin-left: 10px;
-    width:85px
+    width:85px;
+    
+    ${mobile({
+     
+    margin: "0px 0px",
+    width: "100px",
+    fontSize: "15px",
+    padding: "0px 0px"
+    
+    })}
+    
     
 `
 const Heading = styled.h1`
     font-size: 50px;
+    ${mobile({
+      fontSize : "20px"
+    })}
 `
 const Form = styled.form`
     
+    ${mobile({
+      width : "100px"
+    })}
 `
 export default function Slider() {
 

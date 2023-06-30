@@ -7,6 +7,7 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 import MainNav from '../components/MainNav'
 import baseUrl from '../appConfig'
+import {mobile} from '../responsive'
 
 const Container = styled.div`
 
@@ -19,18 +20,30 @@ const SmallNav = styled.div`
   display: flex;
   justify-content: center;
   font-family: 'Roboto';
+  ${mobile({
+      width: "100%",
+      overflow: "scroll",
+      margin :"0",
+    })}
   
 
 `
 const CoverPicture = styled.img`
   width: 100%;
   height: 300px;
+  ${mobile({
+      height: "150px"
+    })}
 `
 const ProfilePicture = styled.img`
   width: 200px;
   height: 200px;
   border-radius: 50%;
   margin-top: -75px; 
+  ${mobile({
+      width : "100px",
+      height: "100px",
+    })}
 `
 const ImageContainer = styled.div`
   display: flex;
@@ -39,12 +52,19 @@ const ImageContainer = styled.div`
   margin: 0px 50px;
   box-shadow: 10px gray;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  ${mobile({
+     margin : "0",
+     width : "100vw"
+    })}
 `
 const Username = styled.h1`
   font-size: 24px;
   font-weight: bold;
   margin-top: 20px;
   font-family: 'ruleway';
+  ${mobile({
+      fontSize: "15px",
+    })}
 `;
 const OptionButton = styled.button`
   border: none;
@@ -64,6 +84,10 @@ const SmallNavItems = styled(Link)`
   padding: 10px;
   color: #050505;
   text-decoration: none;
+  ${mobile({
+     
+    })}
+  
 `
 
 export default function ProfilePage() {

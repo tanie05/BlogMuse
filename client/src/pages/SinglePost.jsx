@@ -6,28 +6,44 @@ import axios from 'axios';
 import { UserContext } from '../UserContext';
 import { Link } from 'react-router-dom';
 import baseUrl from '../appConfig'
+import {mobile} from '../responsive'
+
 const Container = styled.div`
 margin: 10px 100px;
 text-align: center;
 font-family: roboto;
+${mobile({
+     margin : "0",
+    })}
 `
 const Title = styled.h1`
   font-family: 'Libre Baskerville', serif;
   font-size: 90px;
   padding: 20px;
   margin-bottom: 0;
+  ${mobile({
+     padding: "0",
+     margin : "0",
+     fontSize: "50px",
+    })}
 `
 const Cover = styled.img`
   width: 600px;
   height: 600px;
   object-fit: cover;
+  ${mobile({
+     width: "100vw",
+     height: "250px",
+    })}
   
 `
 const Description = styled.div`
 text-align: left;
 font-size: 20px;
 margin: 20px 10px;
-
+${mobile({
+     fontSize: "10px"
+    })}
 `
 const AuthorDetails = styled.div`
 
@@ -41,6 +57,11 @@ const Content = styled.div`
   margin: 40px 0px;
   padding: 10px;
   font-family: roboto;
+  ${mobile({
+     fontSize : "20px",
+     height: "500px",
+     overflow:"scroll"
+    })}
 
 `
 const SmallNav = styled.div`
@@ -54,6 +75,10 @@ const NavBtn = styled.button`
   padding: 5px;
   margin: 5px;
   cursor: pointer;
+  ${mobile({
+     fontSize: "10px",
+     padding: "3px"
+  })}
 
 `
 
