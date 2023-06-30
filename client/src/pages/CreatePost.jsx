@@ -1,4 +1,3 @@
-import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
 import React ,{useContext, useEffect, useState} from "react";
 import {Navigate} from "react-router-dom";
@@ -7,7 +6,7 @@ import { UserContext } from "../UserContext";
 import axios from "axios";
 import styled from 'styled-components'
 import { useLocation } from "react-router-dom";
-
+import baseUrl from '../appConfig'
 const Container = styled.div`
   padding: 20px;
   margin: 50px 100px;
@@ -90,7 +89,7 @@ export default function CreatePost() {
     if(!editMode){
         //creating
         try {
-          axios.post(`http://localhost:5000/posts/${userInfo.username}`, data)
+          axios.post(`${baseUrl}/posts/${userInfo.username}`, data)
           .then((res) => {
             alert("Blog created")
             setRedirect(true)
@@ -103,7 +102,7 @@ export default function CreatePost() {
     else{
       //updating
       try{
-        axios.put(`http://localhost:5000/posts/${postForEdit._id}`, data)
+        axios.put(`${baseUrl}/posts/${postForEdit._id}`, data)
         .then((res) => {
           alert("Blog updated")
           setRedirect(true)

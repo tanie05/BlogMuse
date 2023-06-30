@@ -4,7 +4,7 @@ import { UserContext } from '../UserContext'
 import { Navigate } from 'react-router-dom'
 import styled from "styled-components"
 import { Link } from 'react-router-dom'
-
+import baseUrl from '../appConfig'
 const Container = styled.div`
   background-image: url('https://images.unsplash.com/photo-1482976818992-9487ee04f08b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80');
   background-size: cover;
@@ -62,7 +62,7 @@ const Button = styled.input`
 export default function Register() {
 
   const [user,setUser] = useState({username: "", name: "", email: "", password: ""})
-  const {userInfo, setUserInfo} = useContext(UserContext)
+  const {setUserInfo} = useContext(UserContext)
   const [redirect, setRedirect] = useState(false);
  
   function handleUsernameChange(e){
@@ -88,7 +88,7 @@ export default function Register() {
   function registerUser(event){
     event.preventDefault()
 
-    axios.post('http://localhost:5000/auth/register', user)
+    axios.post(`${baseUrl}/auth/register`, user)
     .then((response) => {
       
         setUserInfo({...response.data.user, flag: true})

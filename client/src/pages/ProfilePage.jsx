@@ -6,6 +6,8 @@ import { UserContext } from '../UserContext'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import MainNav from '../components/MainNav'
+import baseUrl from '../appConfig'
+
 const Container = styled.div`
 
 `
@@ -78,7 +80,7 @@ export default function ProfilePage() {
 
   useEffect( () => {
     
-    axios.get(`http://localhost:5000/users/${userInfo._id}`)
+    axios.get(`${baseUrl}/users/${userInfo._id}`)
     .then(response => {
       setUser(response.data)
       
@@ -86,14 +88,14 @@ export default function ProfilePage() {
     .catch(err => console.log(err))
 
     //getting all created posts
-    axios.get(`http://localhost:5000/lists/${userInfo.username}`)
+    axios.get(`${baseUrl}/lists/${userInfo.username}`)
     .then(response => {
       setCreatedPosts(response.data)
     })
     .catch(err => console.log(err))
 
     //getting all saved posts by user
-    axios.get(`http://localhost:5000/lists/saved/${userInfo._id}`)
+    axios.get(`${baseUrl}/lists/saved/${userInfo._id}`)
     .then(response => {
       setSavedPosts(response.data)
     })

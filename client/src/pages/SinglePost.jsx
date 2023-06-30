@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState, useRef } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import { Navigate, useLocation } from 'react-router-dom';
 import styled from "styled-components"
 import axios from 'axios';
 import { UserContext } from '../UserContext';
 import { Link } from 'react-router-dom';
-
+import baseUrl from '../appConfig'
 const Container = styled.div`
 margin: 10px 100px;
 text-align: center;
@@ -72,7 +72,7 @@ export default function SinglePost() {
   
  
   useEffect(() => {
-    axios.get(`http://localhost:5000/posts/${postId}`)
+    axios.get(`${baseUrl}/posts/${postId}`)
     .then(response => {
       
       setPost(response.data);
@@ -90,7 +90,7 @@ export default function SinglePost() {
 
   function handleDelete() {
   
-        axios.delete(`http://localhost:5000/posts/${postId}`)
+        axios.delete(`${baseUrl}/posts/${postId}`)
         .then(() => {
           setRedirect(true)
         })
@@ -101,7 +101,7 @@ export default function SinglePost() {
   function handleUserUpdate() {
     console.log(userInfo.savedPosts)
     try {
-            axios.put(`http://localhost:5000/users/${userInfo._id}`, {
+            axios.put(`${baseUrl}/users/${userInfo._id}`, {
             savedPosts: userInfo.savedPosts,})
             .then(res => console.log(res))
           } catch (error) {
@@ -135,7 +135,7 @@ export default function SinglePost() {
 
     //updating post
     try{
-      axios.put(`http://localhost:5000/posts/${postId}`, {
+      axios.put(`${baseUrl}/posts/${postId}`, {
         numberOfSaved : updatedNumberOfSaves
       })
       .then(res => console.log(res))

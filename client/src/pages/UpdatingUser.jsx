@@ -2,6 +2,8 @@ import React, { useContext, useState } from 'react'
 import styled from "styled-components"
 import { UserContext } from '../UserContext'
 import axios from 'axios'
+import baseUrl from '../appConfig'
+
 import { Navigate } from 'react-router-dom'
 const Main = styled.div`
 background-image: url('https://images.unsplash.com/photo-1482976818992-9487ee04f08b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80');
@@ -97,7 +99,7 @@ export default function UpdatingUser() {
         coverImg : CoverImage
       }
     try {
-        axios.put(`http://localhost:5000/users/${userInfo._id}`, data)
+        axios.put(`${baseUrl}/users/${userInfo._id}`, data)
         .then((res) => {
           const value = {...userInfo, 
             name: updatedName, 

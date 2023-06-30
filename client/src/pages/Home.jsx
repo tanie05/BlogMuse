@@ -4,16 +4,17 @@ import axios from 'axios'
 import Slider from '../components/Slider'
 import styled from 'styled-components'
 import Post from '../components/Post'
-
+import baseUrl from '../appConfig'
+import { v4 as uuidv4 } from 'uuid';
 const Container = styled.div`
   margin: 50px;
 `
 export default function Home() {
-
+  
   const [posts,setPosts] = useState([])
 
   useEffect(() => {
-    axios.get('http://localhost:5000/posts')
+    axios.get(`${baseUrl}/posts`)
     .then((response) => {
       setPosts(response.data)
     })
@@ -21,11 +22,12 @@ export default function Home() {
 
   
   const displayPost = posts.map((item) => {
-    return (<Post item = {item} />)
+    return (<Post item = {item} key = {uuidv4()} />)
   })
   
   return (
     <div>
+
       <Navbar/>
       <Slider/>
       <Container>
