@@ -8,17 +8,17 @@ const registerController = async (req,res) =>{
         const {username, password, email, name} = req.body
 
         if(!username){
-            return res.send({success: false, error: "username is required"})
+            return res.send({success: false, error: "username is required", alreadyExists: false})
         }
         if(!email){
-          return res.send({success: false, error: "email is required"})
+          return res.send({success: false, error: "email is required", alreadyExists: false})
         }
         
         if(!password){
-            return res.send({success: false, error: "password is required"})
+            return res.send({success: false, error: "password is required", alreadyExists: false})
         }
         if(!name){
-          return res.send({success: false, error: "name is required"})
+          return res.send({success: false, error: "name is required", alreadyExists: false})
         }
 
         //check user
@@ -27,7 +27,8 @@ const registerController = async (req,res) =>{
         if(existingUser){
             return res.status(200).send({
                 success: false,
-                message: "Already registered please login"
+                message: "Already registered please login",
+                alreadyExists: true
             })
         }
 
@@ -46,6 +47,7 @@ const registerController = async (req,res) =>{
         res.status(500).send({
             success: false,
             message: 'Error in Registration',
+            alreadyExists: false,
             err
 
         })
