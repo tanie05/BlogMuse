@@ -89,7 +89,7 @@ export default function Register() {
   async function registerUser(event) {
     event.preventDefault();
     try {
-      const response = await axios.post(`http://localhost:5000/auth/register`, user);
+      const response = await axios.post(`${baseUrl}/auth/register`, user);
       if (response.data.success) {
         setUserInfo({ ...response.data.user, flag: true });
         const value = { ...response.data.user, flag: true };

@@ -136,7 +136,7 @@ export default function UpdatingUser() {
       coverImg: CoverImage
     };
     try {
-      const res = await axios.put(`http://localhost:5000/users/${userInfo._id}`, data);
+      const res = await axios.put(`${baseUrl}/users/${userInfo._id}`, data);
       const value = {
         ...userInfo,
         name: updatedName,
