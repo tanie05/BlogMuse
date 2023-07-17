@@ -72,7 +72,6 @@ const Button = styled.button`
   background-color: #0a4423;
   color: white;
   padding: 3px;
-  position: absolute;
   bottom: 0;
   cursor: pointer;
 
@@ -80,7 +79,7 @@ const Button = styled.button`
     margin: '5px',
     fontSize: '10px',
     padding: '2px',
-    position: 'static',
+    
   })}
 `;
 export default function Post(props) {
