@@ -87,7 +87,7 @@ export default function Login() {
         setRedirect(true)
     
     })
-    .catch((err) => console.log(`error is ${err}`))
+    .catch((err) => alert(err))
   }
   if(redirect) {
     return <Navigate to={'/'} />

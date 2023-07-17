@@ -24,7 +24,7 @@ const Title = styled.h1`
   ${mobile({
      padding: "0",
      margin : "0",
-     fontSize: "50px",
+     fontSize: "30px",
     })}
 `
 const Cover = styled.img`
@@ -81,6 +81,7 @@ const NavBtn = styled.button`
   })}
 
 `
+
 
 
 export default function SinglePost() {
@@ -211,9 +212,10 @@ export default function SinglePost() {
         <AuthorDetails>-{post.author}</AuthorDetails>
         <Cover src = {post.cover} />
         <Description>{post.description}</Description>
-        <Content>
+        {/* <Content>
           {parser.parseFromString(post.content, 'text/html').body.textContent}
-          </Content>
+          </Content> */}
+          <Content dangerouslySetInnerHTML={{ __html: post.content }} />
       </Container>
 
     </div>

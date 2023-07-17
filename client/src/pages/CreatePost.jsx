@@ -7,27 +7,48 @@ import axios from "axios";
 import styled from 'styled-components'
 import { useLocation } from "react-router-dom";
 import baseUrl from '../appConfig'
+import {mobile} from '../responsive'
 const Container = styled.div`
   padding: 20px;
   margin: 50px 100px;
   text-align: center;
-`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  ${mobile({
+    margin: '0px',
+  })}
+`;
+
 const Heading = styled.h1`
   font-size: 40px;
   text-align: center;
   padding: 20px;
   font-family: 'Libre Baskerville', serif;
   color: #0a4423;
-`
-const Form = styled.form`
-`
+
+  ${mobile({
+    fontSize: '30px',
+    padding: '0px',
+  })}
+`;
+
+const Form = styled.form``;
+
 const FormItem = styled.input`
-font-size: 20px;
-padding: 10px;
-margin: 10px;
-border: 1px black solid;
-  
-`
+  font-size: 20px;
+  padding: 10px;
+  margin: 10px;
+  border: 1px black solid;
+
+  ${mobile({
+    fontSize: '12px',
+    padding: '8px',
+    margin: '5px 0px',
+  })}
+`;
+
 const Button = styled.input`
   background-color: #0a4423;
   color: white;
@@ -36,7 +57,13 @@ const Button = styled.input`
   border: 1px black solid;
   border-radius: 5px;
   cursor: pointer;
-`
+
+  ${mobile({
+    fontSize: '12px',
+    padding: '5px',
+  })}
+`;
+
 export default function CreatePost() {
   const location = useLocation();
   const postForEdit = location.state;

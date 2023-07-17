@@ -10,6 +10,9 @@ import {mobile} from '../responsive'
 
 const Container = styled.div`
   margin: 50px;
+  ${mobile({
+    margin: "0px"
+  })}
 `
 export default function Home() {
   console.log("hey")

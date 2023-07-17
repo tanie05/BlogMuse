@@ -5,6 +5,7 @@ import { Navigate } from 'react-router-dom'
 import styled from "styled-components"
 import { Link } from 'react-router-dom'
 import baseUrl from '../appConfig'
+
 const Container = styled.div`
   background-image: url('https://images.unsplash.com/photo-1482976818992-9487ee04f08b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80');
   background-size: cover;
@@ -85,21 +86,23 @@ export default function Register() {
       return {...prevUser, name: e.target.value}
     })
   }
-  function registerUser(event){
-    event.preventDefault()
-
-    axios.post(`${baseUrl}/auth/register`, user)
-    .then((response) => {
-      
-        setUserInfo({...response.data.user, flag: true})
-        const value = {...response.data.user, flag: true};
+  async function registerUser(event) {
+    event.preventDefault();
+    try {
+      const response = await axios.post(`http://localhost:5000/auth/register`, user);
+      if (response.data.success) {
+        setUserInfo({ ...response.data.user, flag: true });
+        const value = { ...response.data.user, flag: true };
         localStorage.setItem('user', JSON.stringify(value));
-
-        setRedirect(true)
-
-    })
-    .catch((err) => console.log(`the error is ${err}`))
+        setRedirect(true);
+      } else {
+        alert(response.data.message);
+      }
+    } catch (err) {
+      alert(err);
+    }
   }
+  
   if(redirect){
     return <Navigate to={'/'}/>
   }
@@ -120,7 +123,7 @@ export default function Register() {
         <br/>
         <Button type="submit" value="Register"/>
       </RegisterForm>
-      <Linking to = {'/login'} >Already have an account ? Login</Linking>
+      {/* <Linking to = {'/login'} >Already have an account ? Login</Linking> */}
       </Main>
     </Container>
   )
