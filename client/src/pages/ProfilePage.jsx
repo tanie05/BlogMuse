@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react'
-import Navbar from '../components/Navbar'
 import styled from 'styled-components'
 import Post from '../components/Post'
 import { UserContext } from '../UserContext'
@@ -95,14 +94,14 @@ export default function ProfilePage() {
   const [user,setUser] = useState({})
   const [savedPosts, setSavedPosts] = useState([])
   const [createdPosts, setCreatedPosts] = useState([])
-  const {userInfo, setUserInfo} = useContext(UserContext)
+  const {userInfo } = useContext(UserContext)
   const [selectedOption, setSelectedOption] = useState('created');
 
   const handleOptionChange = (option) => {
     setSelectedOption(option);
   };
 
-  useEffect( () => {
+  useEffect(() => {
     
     axios.get(`${baseUrl}/users/${userInfo._id}`)
     .then(response => {
@@ -124,14 +123,14 @@ export default function ProfilePage() {
       setSavedPosts(response.data)
     })
     .catch(err => console.log(err))
-  }, [])
+  },[])
    
 
   const displayCreatedPosts = createdPosts.map((item) => {
-    return <Post item = {item} />
+    return <Post item = {item} key = {item._id} />
   })
   const displaySavedPosts = savedPosts.map((item) => {
-    return <Post item = {item} />
+    return <Post item = {item} key = {item._id}/>
   }
   )
   

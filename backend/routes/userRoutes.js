@@ -15,12 +15,14 @@ router.route('/:id').put(async (req,res) => {
     const Updatedname = req.body.name
     const profile = req.body.profileImg
     const cover = req.body.coverImg
+    const updatedSavedPosts = req.body.savedPosts;
 
     try{
       const updatedObject = await User.findByIdAndUpdate(id, {
         name : Updatedname,
         profileImg : profile,
         coverImg: cover,
+        savedPosts : updatedSavedPosts
       });
   
       if(!updatedObject){

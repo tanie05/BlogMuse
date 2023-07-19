@@ -15,7 +15,7 @@ const Container = styled.div`
   })}
 `
 export default function Home() {
-  console.log("hey")
+  
   const [posts,setPosts] = useState([])
 
   useEffect(() => {

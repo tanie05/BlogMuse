@@ -93,9 +93,7 @@ export default function SinglePost() {
   const [isAuthor, setIsAuthor] = useState(false);
   const [redirect, setRedirect] = useState(false);
   const [redirectSave, setRedirectSave] = useState(false);
-  const parser = new DOMParser();
-  
-  
+ 
  
   useEffect(() => {
     axios.get(`${baseUrl}/posts/${postId}`)
@@ -105,14 +103,14 @@ export default function SinglePost() {
       
       if(userInfo.flag){
         const isSaved = userInfo.savedPosts.includes(postId)
-        console.log(isSaved)
+        // console.log(isSaved)
         setSaved(isSaved)
         setIsAuthor(response.data.author === userInfo.username)
       }
       
     })
     .catch(err => console.log(err))
-  }, [])
+  },[])
 
   function handleDelete() {
   
@@ -123,11 +121,10 @@ export default function SinglePost() {
         .catch(err => console.log(err))
     
   }
-  
-  function handleUserUpdate() {
-    console.log(userInfo.savedPosts)
+  async function handleUserUpdate() {
+
     try {
-            axios.put(`${baseUrl}/users/${userInfo._id}`, {
+            await axios.put(`${baseUrl}/users/${userInfo._id}`, {
             savedPosts: userInfo.savedPosts,})
             .then(res => console.log(res))
           } catch (error) {
@@ -151,13 +148,16 @@ export default function SinglePost() {
       updatedSavedArray.push(postId)
       updatedNumberOfSaves += 1
     } 
+    setSaved(!saved)
     
     //update userInfo 
-    console.log(updatedSavedArray)
+    // console.log(updatedSavedArray)
     setUserInfo((prevUserInfo) => ({
       ...prevUserInfo,
       savedPosts: updatedSavedArray,
     }));
+
+   
 
     //updating post
     try{
@@ -169,9 +169,10 @@ export default function SinglePost() {
     catch(err) {
       console.log(err)
     }
-    
-    setSaved(!saved)
     setRedirectSave(true);
+    
+    
+
     
   }
   
@@ -180,7 +181,9 @@ export default function SinglePost() {
     return <Navigate to={"/"}/>
   }
   if(redirectSave){
+    
     handleUserUpdate()
+    
   }
   if (post === null) {
     return <div>Loading...</div>; 
@@ -212,9 +215,6 @@ export default function SinglePost() {
         <AuthorDetails>-{post.author}</AuthorDetails>
         <Cover src = {post.cover} />
         <Description>{post.description}</Description>
-        {/* <Content>
-          {parser.parseFromString(post.content, 'text/html').body.textContent}
-          </Content> */}
           <Content dangerouslySetInnerHTML={{ __html: post.content }} />
       </Container>
 
