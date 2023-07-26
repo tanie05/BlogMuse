@@ -2,7 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
 import {mobile} from '../responsive'
-
+import { UserContext } from '../UserContext'
+import { useContext } from 'react'
 const PostContainer = styled.div`
   display: flex;
   padding: 30px;
@@ -57,9 +58,10 @@ const Description = styled.div`
   })}
 `;
 
-const Author = styled.span`
+const Author = styled(Link)`
   margin: 10px 40px;
   color: gray;
+  text-decoration: none;
 
   ${mobile({
     margin: '10px 0px',
@@ -84,6 +86,7 @@ const Button = styled.button`
 `;
 export default function Post(props) {
 
+  const {userInfo } = useContext(UserContext)
     const item = props.item;
     
     return (
@@ -94,10 +97,14 @@ export default function Post(props) {
           <Written>
           <Title>{item.title}</Title>
           <Description>{item.description}</Description>
-          <Author>-{item.author}</Author>
+          <Author to={ userInfo.username === item.author ? 
+          `/profile` 
+          :
+          `/userprofile?username=${item.author}`}>
+          -{item.author}
+          </Author>
           
           <Link to= {`/${item._id}`} state={item._id}>
-
           <Button>Read Full Blog</Button>
           </Link>
           </Written>

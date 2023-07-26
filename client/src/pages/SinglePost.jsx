@@ -45,10 +45,12 @@ ${mobile({
      fontSize: "10px"
     })}
 `
-const AuthorDetails = styled.div`
-
+const AuthorDetails = styled(Link)`
+display: block;
 font-size: 20px;
 padding: 5px;
+color: gray;
+text-decoration: none;
 
 `
 const Content = styled.div`
@@ -212,7 +214,13 @@ export default function SinglePost() {
         }
         
         <Title>{post.title}</Title>
-        <AuthorDetails>-{post.author}</AuthorDetails>
+        {/* <AuthorDetails>-{post.author}</AuthorDetails> */}
+        <AuthorDetails to={ userInfo.username === post.author ? 
+          `/profile` 
+          :
+          `/userprofile?username=${post.author}`}>
+          -{post.author}
+          </AuthorDetails>
         <Cover src = {post.cover} />
         <Description>{post.description}</Description>
           <Content dangerouslySetInnerHTML={{ __html: post.content }} />

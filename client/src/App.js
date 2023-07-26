@@ -7,6 +7,8 @@ import Register from "./pages/Register";
 import ProfilePage from "./pages/ProfilePage";
 import CreatePost from "./pages/CreatePost";
 import SinglePost from "./pages/SinglePost";
+import OtherUsersProfile from "./pages/OtherUsersProfile";
+
 import "./style.css"
 import UpdatingUser from "./pages/UpdatingUser";
 
@@ -22,6 +24,8 @@ function App() {
        <Route path="/create" element={<CreatePost />}/>
        <Route path="/:id" element={<SinglePost />}/>
        <Route path = "/update" element = {<UpdatingUser/>} />
+       <Route path = "/userprofile" element = {<OtherUsersProfile/>}/>
+
       </Routes>
       </Router>
     </UserContextProvider>

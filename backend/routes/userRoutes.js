@@ -9,6 +9,17 @@ router.route('/:id').get((req, res) => {
       .catch(err => res.status(400).json('Error: ' + err));
   });
 
+  router.route('/username/:username').get((req,res) => {
+    User.find()
+    .then((users) => {
+      users = users.filter(user => user.username === req.params.username)
+      res.json(users)
+    })
+    .catch(err => console.log(err))
+    
+  })
+
+
 //update a user
 router.route('/:id').put(async (req,res) => {
     const id = req.params.id;
