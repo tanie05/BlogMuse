@@ -31,7 +31,10 @@ const userSchema = new Schema({
         default: ""
     },
     savedPosts: [{type: String}],
-    createdPosts: [{type: String}]
+    createdPosts: [{type: String}],
+    followers : [{type: String}],
+    following : [{type: String}],
+    
 
 }, {timestamps: true})
 

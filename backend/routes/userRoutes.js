@@ -27,13 +27,18 @@ router.route('/:id').put(async (req,res) => {
     const profile = req.body.profileImg
     const cover = req.body.coverImg
     const updatedSavedPosts = req.body.savedPosts;
+    const updatedFollowers = req.body.followers;
+    const updatedFollowing = req.body.following;
+
 
     try{
       const updatedObject = await User.findByIdAndUpdate(id, {
         name : Updatedname,
         profileImg : profile,
         coverImg: cover,
-        savedPosts : updatedSavedPosts
+        savedPosts : updatedSavedPosts, 
+        followers: updatedFollowers,
+        following : updatedFollowing,
       });
   
       if(!updatedObject){

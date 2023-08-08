@@ -41,4 +41,32 @@ router.route('/saved/:id').get(async (req,res) => {
 
 
 })
+router.route('/followers/:id').get(async (req,res) => {
+    const id = req.params.id;
+    
+    User.findById(id)
+    .then(user => {
+        const followersNames = user.followers; // Array of followers names
+        res.json(followersNames);
+
+    })
+    .catch(error => {
+        console.error(error);
+    });
+})
+
+router.route('/following/:id').get(async (req,res) => {
+    const id = req.params.id;
+    
+    User.findById(id)
+    .then(user => {
+        const followingUsersNames = user.followers; // Array of followers names
+        res.json(followingUsersNames);
+
+    })
+    .catch(error => {
+        console.error(error);
+    });
+})
+
 module.exports = router

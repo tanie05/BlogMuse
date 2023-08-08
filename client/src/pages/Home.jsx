@@ -30,13 +30,15 @@ export default function Home() {
     return (<Post item = {item} key = {uuidv4()} />)
   })
   
+
   return (
     <div>
 
       <Navbar/>
       <Slider/>
       <Container>
-        {displayPost}
+        {posts.length===0 ? <h3>Loading...</h3> : displayPost}
+        {/* {displayPost} */}
       </Container>
     </div>
 

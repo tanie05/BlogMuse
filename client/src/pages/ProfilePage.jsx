@@ -89,6 +89,8 @@ const SmallNavItems = styled(Link)`
   
 `
 
+
+
 export default function ProfilePage() {
 
   const [user,setUser] = useState({})
@@ -145,6 +147,7 @@ export default function ProfilePage() {
         <ProfilePicture src = {user.profileImg} />
         <Username>{user.username}</Username>
         </ImageContainer>
+
         <SmallNav>
         <OptionButton selected={selectedOption === 'created'} onClick={() => handleOptionChange('created')}>
           Created
@@ -155,7 +158,13 @@ export default function ProfilePage() {
         <SmallNavItems to={'/create'}>Create New Blog</SmallNavItems>
         <SmallNavItems to = {'/update'}>Update Profile</SmallNavItems>
         </SmallNav>
-        {selectedOption === 'created' ? displayCreatedPosts : displaySavedPosts}
+
+        {
+        selectedOption === 'created' ? 
+        displayCreatedPosts.length>0 ? displayCreatedPosts : <h3>Loading...</h3>
+        : 
+        displaySavedPosts.length>0 ? displaySavedPosts : <h3>Loading...</h3>
+        }
       </Container>
     </div>
   )
