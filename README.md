@@ -1,6 +1,7 @@
-# Blog
+# BlogMuse
 Blog website using MERN stack
 
+Live Link - https://blogfrontend-yohe.onrender.com/
 **Tech Stack and Features:**
 
 At the heart of blogMuse is a powerful backend built with **Node.js** and **Express.js**. This robust backend allows users to create accounts, personalize their profiles with custom profile and cover pictures, and craft engaging posts. To ensure security, I've employed industry-standard techniques like **JWT (JSON Web Tokens)** for authentication and the **bcrypt** library for password hashing.
