@@ -5,8 +5,8 @@ Blog website using MERN stack
 
 At the heart of blogMuse is a powerful backend built with **Node.js** and **Express.js**. This robust backend allows users to create accounts, personalize their profiles with custom profile and cover pictures, and craft engaging posts. To ensure security, I've employed industry-standard techniques like **JWT (JSON Web Tokens)** for authentication and the **bcrypt** library for password hashing.
 
+<img width="833" alt="BlogMuse" src="https://github.com/tanie05/Blog/assets/91317220/84a6c99b-9de5-4b00-88f1-da8f1022dfeb">
 
-<img width="960" alt="image" src="https://github.com/tanie05/Blog/assets/91317220/74418988-8032-4972-9407-76c28702bd42">
 <img width="960" alt="Screenshot 2023-09-06 203036" src="https://github.com/tanie05/Blog/assets/91317220/dcdfdc8c-9823-408d-b8da-ca756c270f80">
 <img width="960" alt="Screenshot 2023-09-06 203055" src="https://github.com/tanie05/Blog/assets/91317220/af7d1925-ab39-4d95-a20d-ef70ef90259a">
 
