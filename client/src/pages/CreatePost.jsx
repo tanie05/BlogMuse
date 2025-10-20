@@ -3,10 +3,9 @@ import React ,{useContext, useEffect, useState} from "react";
 import {Navigate} from "react-router-dom";
 import Editor from "../Editor";
 import { UserContext } from "../UserContext";
-import axios from "axios";
+import api from "../utils/api";
 import styled from 'styled-components'
 import { useLocation } from "react-router-dom";
-import baseUrl from '../appConfig'
 import {mobile} from '../responsive'
 const Container = styled.div`
   padding: 20px;
@@ -116,7 +115,7 @@ export default function CreatePost() {
     if(!editMode){
         //creating
         try {
-          axios.post(`${baseUrl}/posts/${userInfo.username}`, data)
+          api.post('/posts', data)
           .then((res) => {
             alert("Blog created")
             setRedirect(true)
@@ -129,7 +128,7 @@ export default function CreatePost() {
     else{
       //updating
       try{
-        axios.put(`${baseUrl}/posts/${postForEdit._id}`, data)
+        api.put(`/posts/${postForEdit._id}`, data)
         .then((res) => {
           alert("Blog updated")
           setRedirect(true)
