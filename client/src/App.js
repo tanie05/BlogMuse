@@ -23,10 +23,9 @@ function App() {
        <Route path="/register" element={<Register />}/>
        <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>}/>
        <Route path="/create" element={<ProtectedRoute><CreatePost /></ProtectedRoute>}/>
-       <Route path="/update" element={<ProtectedRoute><UpdatingUser/></ProtectedRoute>} />
-       <Route path="/userprofile" element={<OtherUsersProfile/>}/>
-       <Route path="/post/:id" element={<ProtectedRoute><SinglePost /></ProtectedRoute>}/>
        <Route path="/:id" element={<ProtectedRoute><SinglePost /></ProtectedRoute>}/>
+       <Route path="/update" element={<ProtectedRoute><UpdatingUser /></ProtectedRoute>} />
+       <Route path = "/userprofile" element = {<OtherUsersProfile/>}/>
 
       </Routes>
       </Router>
