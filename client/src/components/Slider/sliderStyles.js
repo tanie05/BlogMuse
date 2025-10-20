@@ -1,8 +1,7 @@
-import React, {useState} from 'react'
-import styled from 'styled-components'
-import {mobile} from '../responsive'
+import styled from 'styled-components';
+import { mobile } from '../../responsive';
 
-const Container = styled.div`
+export const Container = styled.div`
   height: 500px;
   margin: 0px 50px;
   background-image: url('https://images.unsplash.com/photo-1485498128961-422168ba5f87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=930&q=80');
@@ -19,7 +18,7 @@ const Container = styled.div`
   })}
 `;
 
-const Newsletter = styled.div`
+export const Newsletter = styled.div`
   font-family: 'Libre Baskerville', serif;
   width: max-content;
   text-align: center;
@@ -31,7 +30,7 @@ const Newsletter = styled.div`
   })}
 `;
 
-const FormInput = styled.input`
+export const FormInput = styled.input`
   font-family: 'Roboto';
   width: 350px;
   height: 35px;
@@ -46,7 +45,7 @@ const FormInput = styled.input`
   })}
 `;
 
-const SubmitBtn = styled.input`
+export const SubmitBtn = styled.input`
   font-family: 'Roboto';
   height: 35px;
   background-color: #0a4423;
@@ -64,11 +63,10 @@ const SubmitBtn = styled.input`
     padding: '1px 6px',
     margin: '5px 0',
     width: '50px',
-
   })}
 `;
 
-const Heading = styled.h1`
+export const Heading = styled.h1`
   font-size: 50px;
 
   ${mobile({
@@ -76,22 +74,4 @@ const Heading = styled.h1`
   })}
 `;
 
-const Form = styled.form``;
-export default function Slider() {
-
-    const [email,setEmail] = useState("")
-    function handleSubmit(event) {
-
-    }
-  return (
-    <Container>
-      <Newsletter>
-        <Heading>Subscribe to our newsletter</Heading>
-        <Form onSubmit={handleSubmit}>
-        <FormInput type='text' placeholder='Email' />
-        <SubmitBtn value= "Subscribe"/> 
-        </Form>
-      </Newsletter>
-    </Container>
-  )
-}
+export const Form = styled.form``;
