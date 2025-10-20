@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../../UserContext';
-import axios from 'axios';
-import baseUrl from '../../appConfig';
+import api from '../../utils/api';
 
 export const usePostLogic = (item) => {
   const { userInfo, setUserInfo } = useContext(UserContext);
@@ -24,8 +23,12 @@ export const usePostLogic = (item) => {
 
     setLoading(true);
     try {
+      console.log('Attempting to save/unsave post:', item._id);
+      console.log('User info:', userInfo);
+      
       if (isSaved) {
-        await axios.post(`${baseUrl}/posts/${item._id}/unsave`);
+        console.log('Unsaving post...');
+        await api.post(`/posts/${item._id}/unsave`);
         setIsSaved(false);
         // Update user context to remove from saved posts
         setUserInfo(prev => ({
@@ -33,7 +36,8 @@ export const usePostLogic = (item) => {
           savedPosts: prev.savedPosts.filter(id => id !== item._id)
         }));
       } else {
-        await axios.post(`${baseUrl}/posts/${item._id}/save`);
+        console.log('Saving post...');
+        await api.post(`/posts/${item._id}/save`);
         setIsSaved(true);
         // Update user context to add to saved posts
         setUserInfo(prev => ({
@@ -43,6 +47,7 @@ export const usePostLogic = (item) => {
       }
     } catch (error) {
       console.error('Error toggling save:', error);
+      console.error('Error response:', error.response?.data);
       alert('Error saving/unsaving post');
     } finally {
       setLoading(false);
