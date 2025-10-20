@@ -2,7 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { useLoginLogic } from './loginLogic';
-import { Container, Main, Heading, LoginForm, LoginInput, Button, Linking } from './loginStyles';
+import { Container, Main, Heading, SubHeading, LoginForm, InputGroup, LoginInput, Button, Linking, Divider } from './loginStyles';
 
 export default function Login() {
   const { user, redirect, handleNameChange, handlePasswordChange, loginFunction } = useLoginLogic();
@@ -14,26 +14,29 @@ export default function Login() {
   return (
     <Container>
       <Main>
-        <Heading>Enter login details</Heading>
+        <Heading>Welcome Back</Heading>
+        <SubHeading>Sign in to your account</SubHeading>
         <LoginForm onSubmit={loginFunction}>
-          <LoginInput 
-            type='text' 
-            placeholder='username' 
-            value={user.username} 
-            onChange={handleNameChange} 
-          />
-          <br />
-          <LoginInput 
-            type='password' 
-            placeholder='password' 
-            value={user.password} 
-            onChange={handlePasswordChange} 
-          />
-          <br />
-          <Button type='submit' value="Login" />
-          <br />
+          <InputGroup>
+            <LoginInput 
+              type='text' 
+              placeholder='Username' 
+              value={user.username} 
+              onChange={handleNameChange} 
+            />
+          </InputGroup>
+          <InputGroup>
+            <LoginInput 
+              type='password' 
+              placeholder='Password' 
+              value={user.password} 
+              onChange={handlePasswordChange} 
+            />
+          </InputGroup>
+          <Button type='submit' value="Sign In" />
         </LoginForm>
-        <Linking as={Link} to={'/register'}>Create an account</Linking>
+        <Divider />
+        <Linking as={Link} to={'/register'}>Don't have an account? Create one</Linking>
       </Main>
     </Container>
   );
