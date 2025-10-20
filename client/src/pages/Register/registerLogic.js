@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react';
 import { UserContext } from '../../UserContext';
-import api from '../../utils/api';
+import axios from 'axios';
+import baseUrl from '../../appConfig';
 
 export const useRegisterLogic = () => {
   const [user, setUser] = useState({ username: "", name: "", email: "", password: "" });
@@ -34,7 +35,7 @@ export const useRegisterLogic = () => {
   const registerUser = async (event) => {
     event.preventDefault();
     try {
-      const response = await api.post('/auth/register', user);
+      const response = await axios.post(`${baseUrl}/auth/register`, user);
       if (response.data.success) {
         setUserInfo({ ...response.data.user, flag: true });
         setRedirect(true);

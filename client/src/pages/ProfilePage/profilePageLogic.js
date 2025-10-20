@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../UserContext';
-import api from '../../utils/api';
+import axios from 'axios';
+import baseUrl from '../../appConfig';
 
 export const useProfilePageLogic = () => {
   const [user, setUser] = useState({});
@@ -14,21 +15,21 @@ export const useProfilePageLogic = () => {
   };
 
   useEffect(() => {
-    api.get(`/users/${userInfo._id}`)
+    axios.get(`${baseUrl}/users/${userInfo._id}`)
       .then(response => {
         setUser(response.data.user || response.data);
       })
       .catch(err => console.log(err));
 
     // Getting all created posts
-    api.get(`/lists/${userInfo.username}`)
+    axios.get(`${baseUrl}/lists/${userInfo.username}`)
       .then(response => {
         setCreatedPosts(response.data.posts || response.data);
       })
       .catch(err => console.log(err));
 
     // Getting all saved posts by user
-    api.get(`/lists/saved/${userInfo._id}`)
+    axios.get(`${baseUrl}/lists/saved/${userInfo._id}`)
       .then(response => {
         setSavedPosts(response.data.posts || response.data);
       })

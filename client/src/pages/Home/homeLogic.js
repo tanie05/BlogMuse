@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import api from '../../utils/api';
+import axios from 'axios';
+import baseUrl from '../../appConfig';
 
 export const useHomeLogic = () => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    api.get('/posts')
+    axios.get(`${baseUrl}/posts`)
       .then((response) => {
         setPosts(response.data.posts || response.data);
       })

@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../../UserContext';
-import api from '../../utils/api';
+import axios from 'axios';
+import baseUrl from '../../appConfig';
 
 export const usePostLogic = (item) => {
   const { userInfo, setUserInfo } = useContext(UserContext);
@@ -24,7 +25,7 @@ export const usePostLogic = (item) => {
     setLoading(true);
     try {
       if (isSaved) {
-        await api.post(`/posts/${item._id}/unsave`);
+        await axios.post(`${baseUrl}/posts/${item._id}/unsave`);
         setIsSaved(false);
         // Update user context to remove from saved posts
         setUserInfo(prev => ({
@@ -32,7 +33,7 @@ export const usePostLogic = (item) => {
           savedPosts: prev.savedPosts.filter(id => id !== item._id)
         }));
       } else {
-        await api.post(`/posts/${item._id}/save`);
+        await axios.post(`${baseUrl}/posts/${item._id}/save`);
         setIsSaved(true);
         // Update user context to add to saved posts
         setUserInfo(prev => ({
