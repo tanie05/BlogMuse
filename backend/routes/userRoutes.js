@@ -1,56 +1,122 @@
 const User = require('../models/UserModel')
 const router = require('express').Router()
+const { requiredSignIn, optionalAuth } = require('../authHelpers/authMiddleware')
+const { checkOwnership } = require('../middleware/authorize')
 
-router.route('/:id').get((req, res) => {
-    User.findById(req.params.id)
-      .then(user => {
-        res.json(user)
-      })
-      .catch(err => res.status(400).json('Error: ' + err));
-  });
+// Get user by ID (public route, but with optional auth for additional data)
+router.route('/:id').get(optionalAuth, async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id).select('-password');
+        
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
 
-  router.route('/username/:username').get((req,res) => {
-    User.find()
-    .then((users) => {
-      users = users.filter(user => user.username === req.params.username)
-      res.json(users)
-    })
-    .catch(err => console.log(err))
-    
-  })
-
-
-//update a user
-router.route('/:id').put(async (req,res) => {
-    const id = req.params.id;
-    const Updatedname = req.body.name
-    const profile = req.body.profileImg
-    const cover = req.body.coverImg
-    const updatedSavedPosts = req.body.savedPosts;
-    const updatedFollowers = req.body.followers;
-    const updatedFollowing = req.body.following;
-
-
-    try{
-      const updatedObject = await User.findByIdAndUpdate(id, {
-        name : Updatedname,
-        profileImg : profile,
-        coverImg: cover,
-        savedPosts : updatedSavedPosts, 
-        followers: updatedFollowers,
-        following : updatedFollowing,
-      });
-  
-      if(!updatedObject){
-        return res.status(404).json({success: false,message: "object not found"})
-      }
-      return res.json({success: true, message: "updated successfully", updatedObject});
-
-    } catch(err){
-      console.log(err);
-      return res.status(500).json({success: false, message: "update failed"})
+        // If user is viewing their own profile, include additional data
+        const isOwnProfile = req.user && req.user._id === req.params.id;
+        
+        res.json({
+            success: true,
+            user: {
+                _id: user._id,
+                username: user.username,
+                name: user.name,
+                profileImg: user.profileImg,
+                coverImg: user.coverImg,
+                savedPosts: isOwnProfile ? user.savedPosts : undefined,
+                createdPosts: isOwnProfile ? user.createdPosts : undefined,
+                followers: user.followers,
+                following: user.following,
+                isOwnProfile
+            }
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            success: false,
+            message: "Error fetching user",
+            error: err.message
+        });
     }
-  });
+});
 
+// Get user by username (public route)
+router.route('/username/:username').get(async (req, res) => {
+    try {
+        const user = await User.findOne({ username: req.params.username }).select('-password');
+        
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        res.json({
+            success: true,
+            user: {
+                _id: user._id,
+                username: user.username,
+                name: user.name,
+                profileImg: user.profileImg,
+                coverImg: user.coverImg,
+                followers: user.followers,
+                following: user.following
+            }
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            success: false,
+            message: "Error fetching user",
+            error: err.message
+        });
+    }
+});
+
+// Update a user (protected route - only own profile)
+router.route('/:id').put(requiredSignIn, checkOwnership('user'), async (req, res) => {
+    try {
+        const id = req.params.id;
+        const { name, profileImg, coverImg, savedPosts, followers, following } = req.body;
+
+        const updatedUser = await User.findByIdAndUpdate(
+            id, 
+            {
+                name,
+                profileImg,
+                coverImg,
+                savedPosts,
+                followers,
+                following
+            },
+            { new: true, runValidators: true }
+        ).select('-password');
+
+        if (!updatedUser) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        res.json({
+            success: true,
+            message: "Profile updated successfully",
+            user: updatedUser
+        });
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            success: false,
+            message: "Update failed",
+            error: err.message
+        });
+    }
+});
 
 module.exports = router

@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
 import {mobile} from '../responsive'
 import { UserContext } from '../UserContext'
 import { useContext } from 'react'
+import api from '../utils/api'
 const PostContainer = styled.div`
   display: flex;
   padding: 30px;
@@ -84,32 +85,112 @@ const Button = styled.button`
     
   })}
 `;
-export default function Post(props) {
 
-  const {userInfo } = useContext(UserContext)
-    const item = props.item;
+const SaveButton = styled.button`
+  margin: 10px 40px;
+  font-size: 16px;
+  background-color: ${props => props.saved ? '#28a745' : '#6c757d'};
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: ${props => props.saved ? '#218838' : '#5a6268'};
+  }
+
+  ${mobile({
+    margin: '5px',
+    fontSize: '12px',
+    padding: '3px 6px',
+  })}
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+`;
+export default function Post(props) {
+  const { userInfo, setUserInfo } = useContext(UserContext);
+  const item = props.item;
+  const [isSaved, setIsSaved] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  // Check if post is saved when component mounts
+  useEffect(() => {
+    if (userInfo.flag && item._id) {
+      const isPostSaved = userInfo.savedPosts.includes(item._id);
+      setIsSaved(isPostSaved);
+    }
+  }, [userInfo.flag, userInfo.savedPosts, item._id]);
+
+  const handleSaveToggle = async () => {
+    if (!userInfo.flag) {
+      alert('Please login to save posts');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      if (isSaved) {
+        await api.post(`/posts/${item._id}/unsave`);
+        setIsSaved(false);
+        // Update user context to remove from saved posts
+        setUserInfo(prev => ({
+          ...prev,
+          savedPosts: prev.savedPosts.filter(id => id !== item._id)
+        }));
+      } else {
+        await api.post(`/posts/${item._id}/save`);
+        setIsSaved(true);
+        // Update user context to add to saved posts
+        setUserInfo(prev => ({
+          ...prev,
+          savedPosts: [...prev.savedPosts, item._id]
+        }));
+      }
+    } catch (error) {
+      console.error('Error toggling save:', error);
+      alert('Error saving/unsaving post');
+    } finally {
+      setLoading(false);
+    }
+  };
     
-    return (
-        <div>
-        <hr/>
-        <PostContainer>
-          <Image src = {item.cover} />
-          <Written>
+  return (
+    <div>
+      <hr/>
+      <PostContainer>
+        <Image src={item.cover} />
+        <Written>
           <Title>{item.title}</Title>
           <Description>{item.description}</Description>
-          <Author to={ userInfo.username === item.author ? 
-          `/profile` 
-          :
-          `/userprofile?username=${item.author}`}>
-          -{item.author}
+          <Author to={userInfo.username === item.author ? 
+            `/profile` 
+            :
+            `/userprofile?username=${item.author}`}>
+            -{item.author}
           </Author>
           
-          <Link to= {`/${item._id}`} state={item._id}>
-          <Button>Read Full Blog</Button>
-          </Link>
-          </Written>
-        </PostContainer>
-        </div>
-        
-      )
+          <ButtonContainer>
+            <Link to={`/${item._id}`} state={item._id}>
+              <Button>Read Full Blog</Button>
+            </Link>
+            {userInfo.flag && (
+              <SaveButton 
+                saved={isSaved} 
+                onClick={handleSaveToggle}
+                disabled={loading}
+              >
+                {loading ? '...' : (isSaved ? 'Saved' : 'Save')}
+              </SaveButton>
+            )}
+          </ButtonContainer>
+        </Written>
+      </PostContainer>
+    </div>
+  );
 }

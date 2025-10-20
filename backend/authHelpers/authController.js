@@ -37,8 +37,31 @@ const registerController = async (req,res) =>{
         //save
         const user = await new userModel({username,password:hashedPassword,email, name}).save()
 
+        // Generate token for new user
+        const token = await JWT.sign({ _id: user._id, username: user.username }, process.env.JWT_SECRET, {
+            expiresIn: "7d",
+        });
+        
+        // Set HTTP-only cookie
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+            path: '/'
+        });
+
         res.status(201).send({
-            success:true, message: "user registered successfully" , user
+            success:true, 
+            message: "user registered successfully",
+            user: {
+                _id: user._id,
+                username: user.username,
+                name: user.name,
+                email: user.email,
+                savedPosts: user.savedPosts,
+                createdPosts: user.createdPosts,
+            }
         })
         
 
@@ -85,9 +108,19 @@ const loginController = async (req, res) => {
       }
 
       //token
-      const token = await JWT.sign({ _id: user._id }, process.env.JWT_SECRET, {
+      const token = await JWT.sign({ _id: user._id, username: user.username }, process.env.JWT_SECRET, {
         expiresIn: "7d",
       });
+      
+      // Set HTTP-only cookie
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        path: '/'
+      });
+      
       res.status(200).send({
         success: true,
         message: "login successfully",
@@ -97,8 +130,7 @@ const loginController = async (req, res) => {
           name: user.name,
           savedPosts: user.savedPosts,
           createdPosts: user.createdPosts,
-        },
-        token,
+        }
       });
     } catch (error) {
       console.log(error);
@@ -109,5 +141,66 @@ const loginController = async (req, res) => {
       });
     }
   }; 
+
+//LOGOUT
+const logoutController = async (req, res) => {
+    try {
+        res.clearCookie('token', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            path: '/'
+        });
+        
+        res.status(200).send({
+            success: true,
+            message: "Logged out successfully"
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: "Error in logout",
+            error
+        });
+    }
+};
+
+//GET CURRENT USER
+const getCurrentUserController = async (req, res) => {
+    try {
+        const user = await userModel.findById(req.user._id).select('-password');
+        
+        if (!user) {
+            return res.status(404).send({
+                success: false,
+                message: "User not found"
+            });
+        }
+        
+        res.status(200).send({
+            success: true,
+            user: {
+                _id: user._id,
+                username: user.username,
+                name: user.name,
+                email: user.email,
+                profileImg: user.profileImg,
+                coverImg: user.coverImg,
+                savedPosts: user.savedPosts,
+                createdPosts: user.createdPosts,
+                followers: user.followers,
+                following: user.following
+            }
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: "Error fetching user",
+            error
+        });
+    }
+};
   
-module.exports = {registerController, loginController}
+module.exports = {registerController, loginController, logoutController, getCurrentUserController}

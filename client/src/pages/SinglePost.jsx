@@ -2,10 +2,9 @@ import React, { useContext, useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import { Navigate, useLocation } from 'react-router-dom';
 import styled from "styled-components"
-import axios from 'axios';
+import api from '../utils/api';
 import { UserContext } from '../UserContext';
 import { Link } from 'react-router-dom';
-import baseUrl from '../appConfig'
 import {mobile} from '../responsive'
 
 const Container = styled.div`
@@ -98,25 +97,22 @@ export default function SinglePost() {
  
  
   useEffect(() => {
-    axios.get(`${baseUrl}/posts/${postId}`)
+    api.get(`/posts/${postId}`)
     .then(response => {
-      
-      setPost(response.data);
+      setPost(response.data.post);
       
       if(userInfo.flag){
-        const isSaved = userInfo.savedPosts.includes(postId)
-        // console.log(isSaved)
-        setSaved(isSaved)
-        setIsAuthor(response.data.author === userInfo.username)
+        const isPostSaved = userInfo.savedPosts.includes(postId);
+        setSaved(isPostSaved);
+        setIsAuthor(response.data.post.author === userInfo.username);
       }
-      
     })
     .catch(err => console.log(err))
-  },[])
+  },[userInfo.flag, userInfo.savedPosts, postId])
 
   function handleDelete() {
   
-        axios.delete(`${baseUrl}/posts/${postId}`)
+        api.delete(`/posts/${postId}`)
         .then(() => {
           setRedirect(true)
         })
@@ -126,7 +122,7 @@ export default function SinglePost() {
   async function handleUserUpdate() {
 
     try {
-            await axios.put(`${baseUrl}/users/${userInfo._id}`, {
+            await api.put(`/users/${userInfo._id}`, {
             savedPosts: userInfo.savedPosts,})
             .then(res => console.log(res))
           } catch (error) {
@@ -136,46 +132,40 @@ export default function SinglePost() {
     
 
   async function handleSave() {
-    const val = saved;
-    let updatedSavedArray = userInfo.savedPosts;
-    let updatedNumberOfSaves = post.numberOfSaved ;
-    // setNumSaved(post.numberOfSaved)
+    if (!userInfo.flag) {
+      alert("Please login to save posts.");
+      return;
+    }
 
-   if(val){
-      updatedSavedArray = updatedSavedArray.filter((item) => item !== postId)
-      updatedNumberOfSaves -= 1 
+    try {
+      if (saved) {
+        await api.post(`/posts/${postId}/unsave`);
+        setSaved(false);
+        // Update user context to remove from saved posts
+        setUserInfo(prev => ({
+          ...prev,
+          savedPosts: prev.savedPosts.filter(id => id !== postId)
+        }));
+      } else {
+        await api.post(`/posts/${postId}/save`);
+        setSaved(true);
+        // Update user context to add to saved posts
+        setUserInfo(prev => ({
+          ...prev,
+          savedPosts: [...prev.savedPosts, postId]
+        }));
+      }
       
+      // Update the post's save count
+      setPost(prev => ({
+        ...prev,
+        numberOfSaved: saved ? prev.numberOfSaved - 1 : prev.numberOfSaved + 1
+      }));
+      
+    } catch (error) {
+      console.error('Error saving/unsaving post:', error);
+      alert('Error saving/unsaving post');
     }
-    else{
-      updatedSavedArray.push(postId)
-      updatedNumberOfSaves += 1
-    } 
-    setSaved(!saved)
-    
-    //update userInfo 
-    // console.log(updatedSavedArray)
-    setUserInfo((prevUserInfo) => ({
-      ...prevUserInfo,
-      savedPosts: updatedSavedArray,
-    }));
-
-   
-
-    //updating post
-    try{
-      axios.put(`${baseUrl}/posts/${postId}`, {
-        numberOfSaved : updatedNumberOfSaves
-      })
-      .then(res => console.log(res))
-    }
-    catch(err) {
-      console.log(err)
-    }
-    setRedirectSave(true);
-    
-    
-
-    
   }
   
 

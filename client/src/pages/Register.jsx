@@ -1,10 +1,9 @@
 import React, { useContext, useState } from 'react'
-import axios from 'axios'
+import api from '../utils/api'
 import { UserContext } from '../UserContext'
 import { Navigate } from 'react-router-dom'
 import styled from "styled-components"
 import { Link } from 'react-router-dom'
-import baseUrl from '../appConfig'
 
 const Container = styled.div`
   background-image: url('https://images.unsplash.com/photo-1482976818992-9487ee04f08b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80');
@@ -89,17 +88,16 @@ export default function Register() {
   async function registerUser(event) {
     event.preventDefault();
     try {
-      const response = await axios.post(`${baseUrl}/auth/register`, user);
+      const response = await api.post('/auth/register', user);
       if (response.data.success) {
         setUserInfo({ ...response.data.user, flag: true });
-        const value = { ...response.data.user, flag: true };
-        localStorage.setItem('user', JSON.stringify(value));
         setRedirect(true);
       } else {
-        alert(response.data.message);
+        alert(response.data.message || 'Registration failed');
       }
     } catch (err) {
-      alert(err);
+      console.error('Registration error:', err);
+      alert(err.response?.data?.message || 'Registration failed. Please try again.');
     }
   }
   

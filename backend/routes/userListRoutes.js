@@ -1,72 +1,129 @@
 const router = require('express').Router()
 const User = require('../models/UserModel')
 const Post = require('../models/PostModel')
+const { requiredSignIn, optionalAuth } = require('../authHelpers/authMiddleware')
 
-router.route('/:username').get((req,res) => {
-    const authorName = req.params.username
-    let result = []
-    Post.find()
-    .then((post) => {
-        const allPosts = post;
-        for(var i = 0 ; i<allPosts.length; i++){
-            if(allPosts[i].author === authorName){
-                result.push(allPosts[i]);
-            }
-        }
-        res.json(result);
-    })
-    .catch((err) => res.status(400).json(err))
-})
-
-router.route('/saved/:id').get(async (req,res) => {
-    const id = req.params.id;
-    
-    User.findById(id)
-    .then(user => {
-        const savedPostIds = user.savedPosts; // Array of saved post IDs
-
-        // Retrieve posts based on savedPostIds
-        Post.find({ _id: { $in: savedPostIds } })
-        .then(posts => {
-            res.json(posts) // Output: Array of posts matching the savedPostIds
-        })
-        .catch(error => {
-            console.error(error);
+// Get posts by username (public route)
+router.route('/:username').get(async (req, res) => {
+    try {
+        const authorName = req.params.username;
+        
+        // Use efficient query instead of fetching all posts
+        const posts = await Post.find({ author: authorName }).sort({ createdAt: -1 });
+        
+        res.json({
+            success: true,
+            posts
         });
-    })
-    .catch(error => {
-        console.error(error);
-    });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            success: false,
+            message: "Error fetching user posts",
+            error: err.message
+        });
+    }
+});
 
+// Get saved posts for a user (protected route)
+router.route('/saved/:id').get(requiredSignIn, async (req, res) => {
+    try {
+        const id = req.params.id;
+        
+        // Check if user is accessing their own saved posts
+        if (req.user._id !== id) {
+            return res.status(403).json({
+                success: false,
+                message: "Access denied. You can only view your own saved posts."
+            });
+        }
+        
+        const user = await User.findById(id);
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+        
+        const savedPostIds = user.savedPosts;
+        
+        if (savedPostIds.length === 0) {
+            return res.json({
+                success: true,
+                posts: []
+            });
+        }
+        
+        // Retrieve posts based on savedPostIds
+        const posts = await Post.find({ _id: { $in: savedPostIds } }).sort({ createdAt: -1 });
+        
+        res.json({
+            success: true,
+            posts
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            success: false,
+            message: "Error fetching saved posts",
+            error: err.message
+        });
+    }
+});
 
+// Get followers for a user (public route)
+router.route('/followers/:id').get(async (req, res) => {
+    try {
+        const id = req.params.id;
+        
+        const user = await User.findById(id).select('followers');
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+        
+        res.json({
+            success: true,
+            followers: user.followers
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            success: false,
+            message: "Error fetching followers",
+            error: err.message
+        });
+    }
+});
 
-})
-router.route('/followers/:id').get(async (req,res) => {
-    const id = req.params.id;
-    
-    User.findById(id)
-    .then(user => {
-        const followersNames = user.followers; // Array of followers names
-        res.json(followersNames);
-
-    })
-    .catch(error => {
-        console.error(error);
-    });
-})
-
-router.route('/following/:id').get(async (req,res) => {
-    const id = req.params.id;
-    
-    User.findById(id)
-    .then(user => {
-        const followingUsersNames = user.followers; // Array of followers names
-        res.json(followingUsersNames);
-
-    })
-    .catch(error => {
-        console.error(error);
-    });
-})
+// Get following for a user (public route) - Fixed the bug here
+router.route('/following/:id').get(async (req, res) => {
+    try {
+        const id = req.params.id;
+        
+        const user = await User.findById(id).select('following');
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+        
+        res.json({
+            success: true,
+            following: user.following
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            success: false,
+            message: "Error fetching following",
+            error: err.message
+        });
+    }
+});
 
 module.exports = router
