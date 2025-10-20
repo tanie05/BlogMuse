@@ -1,10 +1,9 @@
 import React, { useContext, useState } from 'react'
 import { UserContext } from '../UserContext'
-import axios from 'axios'
+import api from '../utils/api'
 import { Navigate } from 'react-router-dom'
 import styled from "styled-components"
 import { Link } from 'react-router-dom'
-import baseUrl from '../appConfig'
 const Container = styled.div`
   background-image: url('https://images.unsplash.com/photo-1482976818992-9487ee04f08b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80');
   background-size: cover;
@@ -75,19 +74,22 @@ export default function Login() {
       return {...prevUser, password: e.target.value}
     })
   }
-  function loginFunction(event){
+  async function loginFunction(event){
     event.preventDefault();
 
-    axios.post(`${baseUrl}/auth/login`, user)
-    .then((response) => {
+    try {
+      const response = await api.post('/auth/login', user);
       
-        setUserInfo({...response.data.user, flag: true})
-        const value = {...response.data.user, flag: true};
-        localStorage.setItem('user', JSON.stringify(value))
-        setRedirect(true)
-    
-    })
-    .catch((err) => alert(err))
+      if (response.data.success) {
+        setUserInfo({...response.data.user, flag: true});
+        setRedirect(true);
+      } else {
+        alert(response.data.message || 'Login failed');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      alert(err.response?.data?.message || 'Login failed. Please try again.');
+    }
   }
   if(redirect) {
     return <Navigate to={'/'} />

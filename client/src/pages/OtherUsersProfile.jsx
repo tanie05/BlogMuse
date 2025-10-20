@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Post from '../components/Post'
-import axios from 'axios'
+import api from '../utils/api'
 import MainNav from '../components/MainNav'
-import baseUrl from '../appConfig'
 import {mobile} from '../responsive'
 import { useLocation } from 'react-router-dom';
 
@@ -94,7 +93,7 @@ export default function OtherUsersProfile() {
   function fetchingPost() {
 
         //getting all created posts
-        axios.get(`${baseUrl}/lists/${username}`)
+        api.get(`/lists/${username}`)
         .then(response => {
           setCreatedPosts(response.data)
         })
@@ -103,7 +102,7 @@ export default function OtherUsersProfile() {
   }
   useEffect(() => {
     //getting the user with username = username
-    axios.get(`${baseUrl}/users/username/${username}`)
+    api.get(`/users/username/${username}`)
     .then(response => {
       setUser(response.data[0])
       setId(response.data[0]._id)
@@ -112,7 +111,7 @@ export default function OtherUsersProfile() {
     .catch(err => console.log(err))
 
     //getting all saved posts by user
-    axios.get(`${baseUrl}/lists/saved/${id}`)
+    api.get(`/lists/saved/${id}`)
     .then(response => {
       setSavedPosts(response.data)
     })

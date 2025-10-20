@@ -1,8 +1,7 @@
 import React, { useContext, useState } from 'react'
 import styled from "styled-components"
 import { UserContext } from '../UserContext'
-import axios from 'axios'
-import baseUrl from '../appConfig'
+import api from '../utils/api'
 import { Navigate } from 'react-router-dom'
 import {mobile} from '../responsive'
 
@@ -136,7 +135,7 @@ export default function UpdatingUser() {
       coverImg: CoverImage
     };
     try {
-      const res = await axios.put(`${baseUrl}/users/${userInfo._id}`, data);
+      const res = await api.put(`/users/${userInfo._id}`, data);
       const value = {
         ...userInfo,
         name: updatedName,

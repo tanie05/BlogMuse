@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
-import axios from 'axios'
+import api from '../utils/api'
 import Slider from '../components/Slider'
 import styled from 'styled-components'
 import Post from '../components/Post'
-import baseUrl from '../appConfig'
 import { v4 as uuidv4 } from 'uuid';
 import {mobile} from '../responsive'
 
@@ -19,9 +18,12 @@ export default function Home() {
   const [posts,setPosts] = useState([])
 
   useEffect(() => {
-    axios.get(`${baseUrl}/posts`)
+    api.get('/posts')
     .then((response) => {
-      setPosts(response.data)
+      setPosts(response.data.posts || response.data)
+    })
+    .catch((error) => {
+      console.error('Error fetching posts:', error);
     })
   }, [])
 

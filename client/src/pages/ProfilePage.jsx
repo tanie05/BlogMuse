@@ -2,10 +2,9 @@ import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Post from '../components/Post'
 import { UserContext } from '../UserContext'
-import axios from 'axios'
+import api from '../utils/api'
 import { Link } from 'react-router-dom'
 import MainNav from '../components/MainNav'
-import baseUrl from '../appConfig'
 import {mobile} from '../responsive'
 
 const Container = styled.div`
@@ -105,24 +104,23 @@ export default function ProfilePage() {
 
   useEffect(() => {
     
-    axios.get(`${baseUrl}/users/${userInfo._id}`)
+    api.get(`/users/${userInfo._id}`)
     .then(response => {
-      setUser(response.data)
-      
+      setUser(response.data.user || response.data)
     })
     .catch(err => console.log(err))
 
     //getting all created posts
-    axios.get(`${baseUrl}/lists/${userInfo.username}`)
+    api.get(`/lists/${userInfo.username}`)
     .then(response => {
-      setCreatedPosts(response.data)
+      setCreatedPosts(response.data.posts || response.data)
     })
     .catch(err => console.log(err))
 
     //getting all saved posts by user
-    axios.get(`${baseUrl}/lists/saved/${userInfo._id}`)
+    api.get(`/lists/saved/${userInfo._id}`)
     .then(response => {
-      setSavedPosts(response.data)
+      setSavedPosts(response.data.posts || response.data)
     })
     .catch(err => console.log(err))
   },[])

@@ -32,22 +32,18 @@ const Navitems = styled(Link)`
   color: #050505;
   text-decoration: none;
 `
-export default function Navbar({ showNavbar }) {
+export default function Navbar({ showNavbar = true }) {
   
-  const { setUserInfo } = useContext(UserContext);
+  const { logout } = useContext(UserContext);
   const [Redirect, setRedirect] = useState(false);
 
-  function handleClick() {
-    setUserInfo({
-        flag: false
-    })
-    localStorage.clear()
-    setRedirect(true)
-
+  async function handleClick() {
+    await logout();
+    setRedirect(true);
   }
 
   if(Redirect){
-    <Navigate to = {'/'}/>
+    return <Navigate to = {'/'}/>
   }
 
   return (
