@@ -13,6 +13,19 @@ BlogMuse is a modern, full-stack blogging platform designed for creative writers
 BlogMuse stands out with its user-friendly interface, robust authentication system, and innovative features like post saving and infinite scroll pagination, making it an ideal platform for both casual bloggers and serious content creators.
 
 ---
+---
+
+## 📸 Screenshots
+
+<img width="1512" height="982" alt="Screenshot 2025-10-21 at 12 30 32 PM" src="https://github.com/user-attachments/assets/17711840-dbd2-4e4a-b536-e55185862f4f" />
+<img width="1512" height="982" alt="Screenshot 2025-10-21 at 12 31 06 PM" src="https://github.com/user-attachments/assets/5283e785-0ad3-4d4e-aa16-a362ae89db88" />
+<img width="1512" height="982" alt="Screenshot 2025-10-21 at 12 31 13 PM" src="https://github.com/user-attachments/assets/14ba273d-5572-4dae-9b7d-16bdac65495b" />
+<img width="1512" height="982" alt="Screenshot 2025-10-21 at 12 31 23 PM" src="https://github.com/user-attachments/assets/103e4eb2-3e50-4965-860f-4ca43937c7cc" />
+<img width="1512" height="982" alt="Screenshot 2025-10-21 at 12 31 27 PM" src="https://github.com/user-attachments/assets/bbeec9c3-dec0-4b8f-95d5-cea395444d9f" />
+<img width="1512" height="982" alt="Screenshot 2025-10-21 at 12 31 45 PM" src="https://github.com/user-attachments/assets/424429fe-69b4-4b90-80f9-bf46ca66f380" />
+
+
+---
 
 ## ✨ Features
 
@@ -225,18 +238,6 @@ npm run eject      # Eject from Create React App
 - `GET /users/profile` - Get user profile
 - `PUT /users/profile` - Update user profile
 - `GET /users/saved` - Get user's saved posts
-
----
-
-## 📸 Screenshots
-
-<img width="1512" height="982" alt="Screenshot 2025-10-21 at 12 30 32 PM" src="https://github.com/user-attachments/assets/17711840-dbd2-4e4a-b536-e55185862f4f" />
-<img width="1512" height="982" alt="Screenshot 2025-10-21 at 12 31 06 PM" src="https://github.com/user-attachments/assets/5283e785-0ad3-4d4e-aa16-a362ae89db88" />
-<img width="1512" height="982" alt="Screenshot 2025-10-21 at 12 31 13 PM" src="https://github.com/user-attachments/assets/14ba273d-5572-4dae-9b7d-16bdac65495b" />
-<img width="1512" height="982" alt="Screenshot 2025-10-21 at 12 31 23 PM" src="https://github.com/user-attachments/assets/103e4eb2-3e50-4965-860f-4ca43937c7cc" />
-<img width="1512" height="982" alt="Screenshot 2025-10-21 at 12 31 27 PM" src="https://github.com/user-attachments/assets/bbeec9c3-dec0-4b8f-95d5-cea395444d9f" />
-<img width="1512" height="982" alt="Screenshot 2025-10-21 at 12 31 45 PM" src="https://github.com/user-attachments/assets/424429fe-69b4-4b90-80f9-bf46ca66f380" />
-
 
 ---
 
