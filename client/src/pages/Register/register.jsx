@@ -1,7 +1,8 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useRegisterLogic } from './registerLogic';
-import { Container, Main, Heading, RegisterForm, RegisterInput, Button } from './registerStyles';
+import { Container, Main, Heading, SubHeading, Description, RegisterForm, InputGroup, RegisterInput, Button, Linking, Divider, FormRow } from './registerStyles';
 
 export default function Register() {
   const { 
@@ -21,39 +22,51 @@ export default function Register() {
   return (
     <Container>
       <Main>
-        <Heading>Enter register details</Heading>
-        <br />
+        <Heading>Join BlogMuse</Heading>
+        <SubHeading>Create your account to start writing</SubHeading>
+        <Description>
+          BlogMuse is your creative writing platform where ideas come to life. 
+          Share your stories, connect with fellow writers, and inspire others with your words.
+        </Description>
         <RegisterForm onSubmit={registerUser}>
-          <RegisterInput 
-            type='text' 
-            placeholder='username' 
-            value={user.username} 
-            onChange={handleUsernameChange} 
-          />
-          <br />
-          <RegisterInput 
-            type='password' 
-            placeholder='password' 
-            value={user.password} 
-            onChange={handlePasswordChange} 
-          />
-          <br />
-          <RegisterInput 
-            type='email' 
-            placeholder='email' 
-            value={user.email} 
-            onChange={handleEmailChange} 
-          />
-          <br />
-          <RegisterInput 
-            type='text' 
-            placeholder='name' 
-            value={user.name} 
-            onChange={handleNameChange} 
-          />
-          <br />
-          <Button type="submit" value="Register" />
+          <FormRow>
+            <InputGroup>
+              <RegisterInput 
+                type='text' 
+                placeholder='Username' 
+                value={user.username} 
+                onChange={handleUsernameChange} 
+              />
+            </InputGroup>
+            <InputGroup>
+              <RegisterInput 
+                type='text' 
+                placeholder='Full Name' 
+                value={user.name} 
+                onChange={handleNameChange} 
+              />
+            </InputGroup>
+          </FormRow>
+          <InputGroup>
+            <RegisterInput 
+              type='email' 
+              placeholder='Email Address' 
+              value={user.email} 
+              onChange={handleEmailChange} 
+            />
+          </InputGroup>
+          <InputGroup>
+            <RegisterInput 
+              type='password' 
+              placeholder='Password' 
+              value={user.password} 
+              onChange={handlePasswordChange} 
+            />
+          </InputGroup>
+          <Button type="submit" value="Create Account" />
         </RegisterForm>
+        <Divider />
+        <Linking as={Link} to={'/login'}>Already have an account? Sign in</Linking>
       </Main>
     </Container>
   );

@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
-    "build": "npm i"
+    "build": "npm i",
+    "seed": "node scripts/data\\ seeding/seedDatabase.js",
+    "validate-data": "node scripts/data\\ seeding/validateData.js"
   },
   "keywords": [],
   "author": "",

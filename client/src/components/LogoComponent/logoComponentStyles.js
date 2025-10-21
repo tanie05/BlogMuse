@@ -3,19 +3,44 @@ import { Link } from 'react-router-dom';
 import { mobile } from '../../responsive';
 
 export const Logo = styled.div`
-  font-size: 60px;
-  text-align: center;
-  padding: 20px;
-  font-family: 'Libre Baskerville', serif;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   ${mobile({
-    fontSize: "30px",
-    margin: "0",
-    padding: "5px"
+    alignItems: "center"
+  })}
+`;
+
+export const LogoText = styled.div`
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #333;
+  letter-spacing: 2px;
+  margin-bottom: 2px;
+  font-family: 'Arial', sans-serif;
+  ${mobile({
+    fontSize: "1.4rem",
+    letterSpacing: "1px"
+  })}
+`;
+
+export const Tagline = styled.div`
+  font-size: 0.7rem;
+  color: #666;
+  letter-spacing: 1px;
+  font-weight: 400;
+  font-family: 'Arial', sans-serif;
+  ${mobile({
+    fontSize: "0.6rem",
+    letterSpacing: "0.5px"
   })}
 `;
 
 export const Navitems = styled(Link)`
-  padding: 10px;
-  color: #050505;
   text-decoration: none;
+  color: inherit;
+  
+  &:hover {
+    opacity: 0.8;
+  }
 `;

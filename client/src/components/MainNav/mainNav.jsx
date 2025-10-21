@@ -16,6 +16,7 @@ export default function MainNav({ showNavbar = true }) {
         <Navitems to="/">HOME</Navitems>
         {userInfo.flag ? (
           <>
+            <Navitems to="/saved">SAVED POSTS</Navitems>
             <Navitems to="/profile">{userInfo.username.toUpperCase()}</Navitems>
             <Navitems onClick={handleClick} to="/">LOGOUT</Navitems>
           </>

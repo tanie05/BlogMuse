@@ -9,7 +9,12 @@ const requiredSignIn = async(req,res,next) => {
     try{
         const token = req.cookies.token;
         
+        // Debug logging
+        console.log('Auth middleware - Cookies received:', req.cookies);
+        console.log('Auth middleware - Token found:', !!token);
+        
         if (!token) {
+            console.log('Auth middleware - No token found in cookies');
             return res.status(401).json({
                 success: false,
                 message: "Access denied. No token provided."

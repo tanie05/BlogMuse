@@ -46,9 +46,10 @@ const registerController = async (req,res) =>{
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
+            sameSite: 'lax', // Changed from 'strict' to 'lax' for better compatibility
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-            path: '/'
+            path: '/',
+            domain: process.env.NODE_ENV === 'production' ? undefined : 'localhost' // Only set domain in production
         });
 
         res.status(201).send({
@@ -116,9 +117,10 @@ const loginController = async (req, res) => {
       res.cookie('token', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        sameSite: 'lax', // Changed from 'strict' to 'lax' for better compatibility
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-        path: '/'
+        path: '/',
+        domain: process.env.NODE_ENV === 'production' ? undefined : 'localhost' // Only set domain in production
       });
       
       res.status(200).send({
@@ -148,8 +150,9 @@ const logoutController = async (req, res) => {
         res.clearCookie('token', {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
-            path: '/'
+            sameSite: 'lax',
+            path: '/',
+            domain: process.env.NODE_ENV === 'production' ? undefined : 'localhost'
         });
         
         res.status(200).send({

@@ -1,7 +1,6 @@
 import { useState, useContext } from 'react';
 import { UserContext } from '../../UserContext';
-import axios from 'axios';
-import baseUrl from '../../appConfig';
+import api from '../../utils/api';
 
 export const useLoginLogic = () => {
   const [user, setUser] = useState({ username: "", password: "" });
@@ -24,7 +23,7 @@ export const useLoginLogic = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.post(`${baseUrl}/auth/login`, user);
+      const response = await api.post('/auth/login', user);
       
       if (response.data.success) {
         setUserInfo({ ...response.data.user, flag: true });

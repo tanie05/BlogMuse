@@ -1,19 +1,24 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import baseUrl from '../../appConfig';
+import { useInfiniteScroll } from '../../hooks/useInfiniteScroll';
+import { useScrollToBottom } from '../../hooks/useScrollToBottom';
 
 export const useHomeLogic = () => {
-  const [posts, setPosts] = useState([]);
+  const {
+    data: posts,
+    loading,
+    hasMore,
+    error,
+    loadMore,
+    totalPosts
+  } = useInfiniteScroll('/posts', { limit: 12 });
 
-  useEffect(() => {
-    axios.get(`${baseUrl}/posts`)
-      .then((response) => {
-        setPosts(response.data.posts || response.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching posts:', error);
-      });
-  }, []);
+  // Auto-load more posts when user scrolls to bottom
+  useScrollToBottom(loadMore, hasMore, loading);
 
-  return { posts };
+  return { 
+    posts, 
+    loading, 
+    hasMore, 
+    error, 
+    totalPosts 
+  };
 };

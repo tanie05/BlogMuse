@@ -45,4 +45,15 @@ api.interceptors.response.use(
   }
 );
 
+// API functions
+export const getSavedPosts = async (userId) => {
+  try {
+    const response = await api.get(`/lists/saved/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching saved posts:', error);
+    throw error;
+  }
+};
+
 export default api;
