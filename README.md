@@ -280,7 +280,7 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
 - **MongoDB** for the flexible database solution
 - **Material-UI** for the beautiful component library
 - **React Quill** for the rich text editor
-- **Claude AI** for assistance in creating this comprehensive README documentation
+- **Claude AI** 
 - **All contributors** who helped make this project possible
 
 ---
