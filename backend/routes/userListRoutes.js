@@ -25,18 +25,10 @@ router.route('/:username').get(async (req, res) => {
     }
 });
 
-// Get saved posts for a user (protected route)
-router.route('/saved/:id').get(requiredSignIn, async (req, res) => {
+// Get saved posts for a user (public route)
+router.route('/saved/:id').get(optionalAuth, async (req, res) => {
     try {
         const id = req.params.id;
-        
-        // Check if user is accessing their own saved posts
-        if (req.user._id !== id) {
-            return res.status(403).json({
-                success: false,
-                message: "Access denied. You can only view your own saved posts."
-            });
-        }
         
         const user = await User.findById(id);
         if (!user) {

@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Post from '../../components/Post';
 import MainNav from '../../components/MainNav';
 import { useProfilePageLogic } from './profilePageLogic';
+import { getProfilePicture } from '../../utils/profilePicture';
 import { 
   Container, 
   SmallNav, 
@@ -13,7 +14,10 @@ import {
   OptionButton, 
   SmallNavItems,
   PostsContainer,
-  Column
+  Column,
+  ProfileHeader,
+  ProfileInfo,
+  ProfileActions
 } from './profilePageStyles';
 
 export default function ProfilePage() {
@@ -94,11 +98,16 @@ export default function ProfilePage() {
     <div>
       <MainNav />
       <Container>
-        <ImageContainer>
-          <CoverPicture src={user.coverImg} alt='cover picture' />
-          <ProfilePicture src={user.profileImg} />
-          <Username>{user.username}</Username>
-        </ImageContainer>
+        <ProfileHeader>
+          <ProfilePicture src={getProfilePicture(user.profileImg)} />
+          <ProfileInfo>
+            <Username>{user.username}</Username>
+            <ProfileActions>
+              <SmallNavItems to={'/create'}>Create New Blog</SmallNavItems>
+              <SmallNavItems to={'/update'}>Update Profile</SmallNavItems>
+            </ProfileActions>
+          </ProfileInfo>
+        </ProfileHeader>
 
         <SmallNav>
           <OptionButton 
@@ -113,8 +122,6 @@ export default function ProfilePage() {
           >
             Saved
           </OptionButton>
-          <SmallNavItems to={'/create'}>Create New Blog</SmallNavItems>
-          <SmallNavItems to={'/update'}>Update Profile</SmallNavItems>
         </SmallNav>
 
         {selectedOption === 'created' ? displayCreatedPosts() : displaySavedPosts()}

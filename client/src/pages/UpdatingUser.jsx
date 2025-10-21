@@ -6,92 +6,130 @@ import { Navigate } from 'react-router-dom'
 import {mobile} from '../responsive'
 
 const Main = styled.div`
-  background-image: url('https://images.unsplash.com/photo-1482976818992-9487ee04f08b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: #F2F2F2;
   width: 100%;
-  height: 97vh;
+  min-height: 100vh;
   margin: 0;
   padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   ${mobile({
-    height: "100vh",
+    padding: "20px 0",
   })}
 `;
 
 const Container = styled.div`
-  padding: 20px;
-  margin: 0px 100px;
-  text-align: center;
-  font-family: 'Libre Baskerville', serif;
+  background: white;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 20px;
 
   ${mobile({
-    margin: "0px 10px",
-    padding: "10px",
+    margin: "10px",
+    padding: "20px",
   })}
 `;
 
 const Heading = styled.h1`
-  font-size: 40px;
+  font-size: 36px;
   text-align: center;
-  padding: 20px;
+  padding: 0 0 30px 0;
+  font-family: 'Roboto', sans-serif;
+  color: #1E594E;
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
   ${mobile({
-    fontSize: "30px",
-    padding: "10px",
+    fontSize: "28px",
+    padding: "0 0 20px 0",
   })}
 `;
 
 const Form = styled.form`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 `;
 
 const FormItem = styled.input`
-  font-size: 20px;
-  padding: 10px;
-  margin: 10px;
-  border: 1px black solid;
-  width: 300px;
-  background-color: whitesmoke;
+  font-size: 16px;
+  padding: 15px;
+  border: 2px solid #E0E0E0;
+  border-radius: 8px;
+  background: #F9F9F9;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+    border-color: #1E594E;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(30, 89, 78, 0.1);
+  }
+
+  &::placeholder {
+    color: #999;
+  }
 
   ${mobile({
-    fontSize: "12px",
-    padding: "5px",
-    margin: "5px",
-    width: "100%",
+    fontSize: "14px",
+    padding: "12px",
   })}
 `;
 
 const Button = styled.input`
-  background-color: #0a4423;
+  background: linear-gradient(135deg, #1E594E 0%, #2A6B5F 100%);
   color: white;
-  font-size: 20px;
-  padding: 10px 20px;
-  border: 1px black solid;
-  border-radius: 5px;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
-  margin: 50px;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+  box-shadow: 0 4px 12px rgba(30, 89, 78, 0.3);
+
+  &:hover {
+    background: linear-gradient(135deg, #2A6B5F 0%, #1E594E 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(30, 89, 78, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
 
   ${mobile({
     fontSize: "16px",
-    padding: "8px 16px",
-    margin: "20px",
+    padding: "12px 24px",
+    margin: "10px 0",
   })}
 `;
 
 const Label = styled.label`
-  font-size: 22px;
-  padding: 10px;
-  margin: 10px 0px;
-  font-weight: bold;
+  font-size: 18px;
+  padding: 0;
+  margin: 0 0 8px 0;
+  font-weight: 600;
+  color: #1E594E;
+  text-align: left;
+  width: 100%;
 
   ${mobile({
-    fontSize: "18px",
-    padding: "8px",
-    margin: "8px 0px",
+    fontSize: "16px",
+    margin: "0 0 6px 0",
   })}
 `;
 
@@ -158,7 +196,7 @@ export default function UpdatingUser() {
         <Container>
         <Heading>User Profile</Heading>
         <Form onSubmit={handleUserUpdate}>
-            <Label htmlFor='name' style={{}} >Name:</Label>
+            <Label htmlFor='name'>Name:</Label>
             <FormItem 
                 type='text' 
                 placeholder='Name' 
@@ -166,7 +204,7 @@ export default function UpdatingUser() {
                 id='name'
                 onChange={(e) => setUpdatedName(e.target.value)} 
             />
-            <br/>
+            
             <Label htmlFor='profile'>Select Profile Picture:</Label>
             <FormItem 
                 type='file' 
@@ -174,15 +212,6 @@ export default function UpdatingUser() {
                 id = 'profile'
                 onChange={handleProfileImageSelect}
             />
-            <br/>
-            <Label htmlFor='cover'>Select Cover Picture:</Label>
-            <FormItem 
-            type='file' 
-            placeholder='Choose Cover Picture' 
-            id = 'cover'
-            onChange={handleCoverImageSelect}
-            />
-            <br/>
 
             <Button type='submit' value= "Submit" />
         </Form>

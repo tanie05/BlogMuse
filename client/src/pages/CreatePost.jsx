@@ -8,58 +8,106 @@ import styled from 'styled-components'
 import { useLocation } from "react-router-dom";
 import {mobile} from '../responsive'
 const Container = styled.div`
-  padding: 20px;
-  margin: 50px 100px;
-  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px;
+  background: #F2F2F2;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
 
   ${mobile({
-    margin: '0px',
+    padding: '20px',
+    margin: '0',
   })}
 `;
 
 const Heading = styled.h1`
-  font-size: 40px;
+  font-size: 42px;
   text-align: center;
-  padding: 20px;
-  font-family: 'Libre Baskerville', serif;
-  color: #0a4423;
+  padding: 30px 0;
+  font-family: 'Roboto', sans-serif;
+  color: #1E594E;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
   ${mobile({
-    fontSize: '30px',
-    padding: '0px',
+    fontSize: '32px',
+    padding: '20px 0',
   })}
 `;
 
-const Form = styled.form``;
-
-const FormItem = styled.input`
-  font-size: 20px;
-  padding: 10px;
-  margin: 10px;
-  border: 1px black solid;
+const Form = styled.form`
+  background: white;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 
   ${mobile({
-    fontSize: '12px',
-    padding: '8px',
-    margin: '5px 0px',
+    padding: '20px',
+  })}
+`;
+
+const FormItem = styled.input`
+  font-size: 16px;
+  padding: 15px;
+  border: 2px solid #E0E0E0;
+  border-radius: 8px;
+  background: #F9F9F9;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+    border-color: #1E594E;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(30, 89, 78, 0.1);
+  }
+
+  &::placeholder {
+    color: #999;
+  }
+
+  ${mobile({
+    fontSize: '14px',
+    padding: '12px',
   })}
 `;
 
 const Button = styled.input`
-  background-color: #0a4423;
+  background: linear-gradient(135deg, #1E594E 0%, #2A6B5F 100%);
   color: white;
-  font-size: 20px;
-  padding: 10px 20px;
-  border: 1px black solid;
-  border-radius: 5px;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+  box-shadow: 0 4px 12px rgba(30, 89, 78, 0.3);
+
+  &:hover {
+    background: linear-gradient(135deg, #2A6B5F 0%, #1E594E 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(30, 89, 78, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
 
   ${mobile({
-    fontSize: '12px',
-    padding: '5px',
+    fontSize: '16px',
+    padding: '12px 24px',
   })}
 `;
 
@@ -161,14 +209,12 @@ export default function CreatePost() {
         value={title}
         onChange={(e) => setTitle(e.target.value)} 
       />
-      <br/>
       <FormItem 
         type="text" 
         placeholder="Description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
-      <br/>
       <FormItem 
         type="file"
         onChange={handleImageSelect}
