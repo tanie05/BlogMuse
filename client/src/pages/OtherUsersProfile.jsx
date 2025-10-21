@@ -4,6 +4,8 @@ import { v4 as uuidv4 } from 'uuid'
 import Post from '../components/Post'
 import api from '../utils/api'
 import MainNav from '../components/MainNav'
+import { useInfiniteScroll } from '../hooks/useInfiniteScroll'
+import { useScrollToBottom } from '../hooks/useScrollToBottom'
 import {mobile} from '../responsive'
 import { useLocation } from 'react-router-dom';
 import { getProfilePicture } from '../utils/profilePicture';
@@ -171,12 +173,21 @@ export default function OtherUsersProfile() {
 
   const username = params.get('username');
   const [selectedOption, setSelectedOption] = useState('created');
-  const [createdPosts, setCreatedPosts] = useState([]);
-  const [savedPosts, setSavedPosts] = useState([]);
   const [user, setUser] = useState(null);
   const [id,setId] = useState(null);
   const [numColumns, setNumColumns] = useState(2);
   const [loading, setLoading] = useState(true);
+
+  // Infinite scroll hooks for created and saved posts
+  const createdPostsHook = useInfiniteScroll(username ? `/lists/${username}` : null, { limit: 12 });
+  const savedPostsHook = useInfiniteScroll(id ? `/lists/saved/${id}` : null, { limit: 12 });
+
+  // Auto-load more posts when user scrolls to bottom
+  useScrollToBottom(
+    selectedOption === 'created' ? createdPostsHook.loadMore : savedPostsHook.loadMore,
+    selectedOption === 'created' ? createdPostsHook.hasMore : savedPostsHook.hasMore,
+    selectedOption === 'created' ? createdPostsHook.loading : savedPostsHook.loading
+  );
 
   // Function to distribute posts across dynamic columns
   const distributePosts = (posts, numColumns) => {
@@ -199,18 +210,9 @@ export default function OtherUsersProfile() {
     return 2; // Default fallback
   };
 
-  function fetchingPost() {
-
-        //getting all created posts
-        api.get(`/lists/${username}`)
-        .then(response => {
-          setCreatedPosts(response.data)
-        })
-        .catch(err => console.log(err))
-    
-  }
   useEffect(() => {
     //getting the user with username = username
+    console.log(username)
     api.get(`/users/username/${username}`)
     .then(response => {
       console.log(response)
@@ -218,25 +220,12 @@ export default function OtherUsersProfile() {
       setUser(response.data.user)
       setId(response.data.user._id)
       setLoading(false)
-      fetchingPost();
     })
     .catch(err => {
       console.log(err)
       setLoading(false)
     })
   }, [username])
-
-  // Separate useEffect for saved posts that only runs when id is available
-  useEffect(() => {
-    if (id) {
-      //getting all saved posts by user
-      api.get(`/lists/saved/${id}`)
-      .then(response => {
-        setSavedPosts(response.data)
-      })
-      .catch(err => console.log(err))
-    }
-  }, [id])
 
   // Handle window resize
   useEffect(() => {
@@ -259,36 +248,72 @@ export default function OtherUsersProfile() {
   };
 
   const displayCreatedPosts = () => {
-    if (createdPosts.length === 0) return <h3>Loading...</h3>;
+    if (createdPostsHook.loading && createdPostsHook.data.length === 0) return <h3>Loading...</h3>;
+    if (createdPostsHook.data.length === 0) return <h3>No created posts found</h3>;
     
-    const columns = distributePosts(createdPosts, numColumns);
+    const columns = distributePosts({ posts: createdPostsHook.data }, numColumns);
     return (
-      <PostsContainer>
-        {columns.map((columnPosts, index) => (
-          <Column key={index}>
-            {columnPosts.map((item) => (
-              <Post item={item} key={uuidv4()} />
-            ))}
-          </Column>
-        ))}
-      </PostsContainer>
+      <>
+        <PostsContainer>
+          {columns.map((columnPosts, index) => (
+            <Column key={index}>
+              {columnPosts.map((item) => (
+                <Post item={item} key={uuidv4()} />
+              ))}
+            </Column>
+          ))}
+        </PostsContainer>
+        {createdPostsHook.loading && createdPostsHook.data.length > 0 && (
+          <div style={{ textAlign: 'center', padding: '20px' }}>
+            <h4>Loading more posts...</h4>
+          </div>
+        )}
+        {!createdPostsHook.hasMore && createdPostsHook.data.length > 0 && (
+          <div style={{ textAlign: 'center', padding: '20px', color: '#666' }}>
+            <p>You've reached the end! No more posts to load.</p>
+          </div>
+        )}
+        {createdPostsHook.error && (
+          <div style={{ textAlign: 'center', padding: '20px', color: '#e74c3c' }}>
+            <p>Error loading posts: {createdPostsHook.error}</p>
+          </div>
+        )}
+      </>
     );
   };
 
   const displaySavedPosts = () => {
-    if (savedPosts.length === 0) return <h3>Loading...</h3>;
+    if (savedPostsHook.loading && savedPostsHook.data.length === 0) return <h3>Loading...</h3>;
+    if (savedPostsHook.data.length === 0) return <h3>No saved posts found</h3>;
     
-    const columns = distributePosts(savedPosts, numColumns);
+    const columns = distributePosts({ posts: savedPostsHook.data }, numColumns);
     return (
-      <PostsContainer>
-        {columns.map((columnPosts, index) => (
-          <Column key={index}>
-            {columnPosts.map((item) => (
-              <Post item={item} key={uuidv4()} />
-            ))}
-          </Column>
-        ))}
-      </PostsContainer>
+      <>
+        <PostsContainer>
+          {columns.map((columnPosts, index) => (
+            <Column key={index}>
+              {columnPosts.map((item) => (
+                <Post item={item} key={uuidv4()} />
+              ))}
+            </Column>
+          ))}
+        </PostsContainer>
+        {savedPostsHook.loading && savedPostsHook.data.length > 0 && (
+          <div style={{ textAlign: 'center', padding: '20px' }}>
+            <h4>Loading more posts...</h4>
+          </div>
+        )}
+        {!savedPostsHook.hasMore && savedPostsHook.data.length > 0 && (
+          <div style={{ textAlign: 'center', padding: '20px', color: '#666' }}>
+            <p>You've reached the end! No more posts to load.</p>
+          </div>
+        )}
+        {savedPostsHook.error && (
+          <div style={{ textAlign: 'center', padding: '20px', color: '#e74c3c' }}>
+            <p>Error loading posts: {savedPostsHook.error}</p>
+          </div>
+        )}
+      </>
     );
   };
   

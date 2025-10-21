@@ -1,0 +1,359 @@
+[
+  {
+    "_id": "u1",
+    "username": "user_1",
+    "email": "user_1@example.com",
+    "name": "User 1",
+    "password": "hashedpassword1",
+    "profileImg": "",
+    "coverImg": "",
+    "savedPosts": [
+      "p76",
+      "p27",
+      "p80"
+    ],
+    "createdPosts": [
+      "p1",
+      "p2",
+      "p3",
+      "p4",
+      "p5",
+      "p6",
+      "p7",
+      "p8",
+      "p9",
+      "p10"
+    ],
+    "followers": [
+      "u10",
+      "u3",
+      "u6"
+    ],
+    "following": [
+      "u10",
+      "u2",
+      "u8"
+    ]
+  },
+  {
+    "_id": "u2",
+    "username": "user_2",
+    "email": "user_2@example.com",
+    "name": "User 2",
+    "password": "hashedpassword2",
+    "profileImg": "",
+    "coverImg": "",
+    "savedPosts": [
+      "p95",
+      "p95",
+      "p91"
+    ],
+    "createdPosts": [
+      "p11",
+      "p12",
+      "p13",
+      "p14",
+      "p15",
+      "p16",
+      "p17",
+      "p18",
+      "p19",
+      "p20"
+    ],
+    "followers": [
+      "u1",
+      "u9",
+      "u1"
+    ],
+    "following": [
+      "u6",
+      "u7",
+      "u3"
+    ]
+  },
+  {
+    "_id": "u3",
+    "username": "user_3",
+    "email": "user_3@example.com",
+    "name": "User 3",
+    "password": "hashedpassword3",
+    "profileImg": "",
+    "coverImg": "",
+    "savedPosts": [
+      "p28",
+      "p35",
+      "p6"
+    ],
+    "createdPosts": [
+      "p21",
+      "p22",
+      "p23",
+      "p24",
+      "p25",
+      "p26",
+      "p27",
+      "p28",
+      "p29",
+      "p30"
+    ],
+    "followers": [
+      "u5",
+      "u10"
+    ],
+    "following": [
+      "u8",
+      "u2",
+      "u4"
+    ]
+  },
+  {
+    "_id": "u4",
+    "username": "user_4",
+    "email": "user_4@example.com",
+    "name": "User 4",
+    "password": "hashedpassword4",
+    "profileImg": "",
+    "coverImg": "",
+    "savedPosts": [
+      "p16",
+      "p7",
+      "p55"
+    ],
+    "createdPosts": [
+      "p31",
+      "p32",
+      "p33",
+      "p34",
+      "p35",
+      "p36",
+      "p37",
+      "p38",
+      "p39",
+      "p40"
+    ],
+    "followers": [
+      "u9",
+      "u4",
+      "u3"
+    ],
+    "following": [
+      "u9",
+      "u3",
+      "u3"
+    ]
+  },
+  {
+    "_id": "u5",
+    "username": "user_5",
+    "email": "user_5@example.com",
+    "name": "User 5",
+    "password": "hashedpassword5",
+    "profileImg": "",
+    "coverImg": "",
+    "savedPosts": [
+      "p3",
+      "p39",
+      "p62"
+    ],
+    "createdPosts": [
+      "p41",
+      "p42",
+      "p43",
+      "p44",
+      "p45",
+      "p46",
+      "p47",
+      "p48",
+      "p49",
+      "p50"
+    ],
+    "followers": [
+      "u1",
+      "u9",
+      "u7"
+    ],
+    "following": [
+      "u4",
+      "u8",
+      "u8"
+    ]
+  },
+  {
+    "_id": "u6",
+    "username": "user_6",
+    "email": "user_6@example.com",
+    "name": "User 6",
+    "password": "hashedpassword6",
+    "profileImg": "",
+    "coverImg": "",
+    "savedPosts": [
+      "p3",
+      "p41",
+      "p81"
+    ],
+    "createdPosts": [
+      "p51",
+      "p52",
+      "p53",
+      "p54",
+      "p55",
+      "p56",
+      "p57",
+      "p58",
+      "p59",
+      "p60"
+    ],
+    "followers": [
+      "u2",
+      "u6",
+      "u9"
+    ],
+    "following": [
+      "u8",
+      "u10",
+      "u9"
+    ]
+  },
+  {
+    "_id": "u7",
+    "username": "user_7",
+    "email": "user_7@example.com",
+    "name": "User 7",
+    "password": "hashedpassword7",
+    "profileImg": "",
+    "coverImg": "",
+    "savedPosts": [
+      "p13",
+      "p52",
+      "p77"
+    ],
+    "createdPosts": [
+      "p61",
+      "p62",
+      "p63",
+      "p64",
+      "p65",
+      "p66",
+      "p67",
+      "p68",
+      "p69",
+      "p70"
+    ],
+    "followers": [
+      "u3",
+      "u1",
+      "u2"
+    ],
+    "following": [
+      "u4",
+      "u2",
+      "u3"
+    ]
+  },
+  {
+    "_id": "u8",
+    "username": "user_8",
+    "email": "user_8@example.com",
+    "name": "User 8",
+    "password": "hashedpassword8",
+    "profileImg": "",
+    "coverImg": "",
+    "savedPosts": [
+      "p90",
+      "p41",
+      "p97"
+    ],
+    "createdPosts": [
+      "p71",
+      "p72",
+      "p73",
+      "p74",
+      "p75",
+      "p76",
+      "p77",
+      "p78",
+      "p79",
+      "p80"
+    ],
+    "followers": [
+      "u5",
+      "u6",
+      "u6"
+    ],
+    "following": [
+      "u5",
+      "u10",
+      "u7"
+    ]
+  },
+  {
+    "_id": "u9",
+    "username": "user_9",
+    "email": "user_9@example.com",
+    "name": "User 9",
+    "password": "hashedpassword9",
+    "profileImg": "",
+    "coverImg": "",
+    "savedPosts": [
+      "p4",
+      "p91",
+      "p4"
+    ],
+    "createdPosts": [
+      "p81",
+      "p82",
+      "p83",
+      "p84",
+      "p85",
+      "p86",
+      "p87",
+      "p88",
+      "p89",
+      "p90"
+    ],
+    "followers": [
+      "u6",
+      "u5",
+      "u6"
+    ],
+    "following": [
+      "u10",
+      "u2"
+    ]
+  },
+  {
+    "_id": "u10",
+    "username": "user_10",
+    "email": "user_10@example.com",
+    "name": "User 10",
+    "password": "hashedpassword10",
+    "profileImg": "",
+    "coverImg": "",
+    "savedPosts": [
+      "p80",
+      "p85",
+      "p97"
+    ],
+    "createdPosts": [
+      "p91",
+      "p92",
+      "p93",
+      "p94",
+      "p95",
+      "p96",
+      "p97",
+      "p98",
+      "p99",
+      "p100"
+    ],
+    "followers": [
+      "u9",
+      "u8",
+      "u1"
+    ],
+    "following": [
+      "u5",
+      "u8"
+    ]
+  }
+]

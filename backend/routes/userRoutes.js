@@ -6,6 +6,7 @@ const { checkOwnership } = require('../middleware/authorize')
 // Get user by ID (public route, but with optional auth for additional data)
 router.route('/:id').get(optionalAuth, async (req, res) => {
     try {
+        console.log(req.params.id)
         const user = await User.findById(req.params.id).select('-password');
         
         if (!user) {

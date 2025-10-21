@@ -6,7 +6,7 @@ import { useHomeLogic } from './homeLogic';
 import { Container, Column } from './homeStyles';
 
 export default function Home() {
-  const { posts } = useHomeLogic();
+  const { posts, loading, hasMore, error, totalPosts } = useHomeLogic();
   const [numColumns, setNumColumns] = useState(2);
 
   // Function to distribute posts across dynamic columns
@@ -51,16 +51,35 @@ export default function Home() {
     <div>
       <Navbar />
       <Container>
-        {posts.length === 0 ? (
+        {loading && posts.length === 0 ? (
           <h3>Loading...</h3>
+        ) : posts.length === 0 ? (
+          <h3>No posts found</h3>
         ) : (
-          columns.map((columnPosts, index) => (
-            <Column key={index}>
-              {columnPosts.map((item) => (
-                <Post item={item} key={uuidv4()} />
-              ))}
-            </Column>
-          ))
+          <>
+            {columns.map((columnPosts, index) => (
+              <Column key={index}>
+                {columnPosts.map((item) => (
+                  <Post item={item} key={uuidv4()} />
+                ))}
+              </Column>
+            ))}
+            {loading && posts.length > 0 && (
+              <div style={{ textAlign: 'center', padding: '20px' }}>
+                <h4>Loading more posts...</h4>
+              </div>
+            )}
+            {!hasMore && posts.length > 0 && (
+              <div style={{ textAlign: 'center', padding: '20px', color: '#666' }}>
+                <p>You've reached the end! No more posts to load.</p>
+              </div>
+            )}
+            {error && (
+              <div style={{ textAlign: 'center', padding: '20px', color: '#e74c3c' }}>
+                <p>Error loading posts: {error}</p>
+              </div>
+            )}
+          </>
         )}
       </Container>
     </div>

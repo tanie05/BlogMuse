@@ -8,6 +8,7 @@ import ProfilePage from "./pages/ProfilePage";
 import CreatePost from "./pages/CreatePost";
 import SinglePost from "./pages/SinglePost";
 import OtherUsersProfile from "./pages/OtherUsersProfile";
+import SavedPosts from "./pages/SavedPosts";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 import "./style.css"
@@ -23,6 +24,7 @@ function App() {
        <Route path="/register" element={<Register />}/>
        <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>}/>
        <Route path="/create" element={<ProtectedRoute><CreatePost /></ProtectedRoute>}/>
+       <Route path="/saved" element={<ProtectedRoute><SavedPosts /></ProtectedRoute>}/>
        <Route path="/:id" element={<ProtectedRoute><SinglePost /></ProtectedRoute>}/>
        <Route path="/update" element={<ProtectedRoute><UpdatingUser /></ProtectedRoute>} />
        <Route path = "/userprofile" element = {<OtherUsersProfile/>}/>

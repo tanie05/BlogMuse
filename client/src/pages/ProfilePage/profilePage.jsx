@@ -21,7 +21,19 @@ import {
 } from './profilePageStyles';
 
 export default function ProfilePage() {
-  const { user, savedPosts, createdPosts, selectedOption, handleOptionChange } = useProfilePageLogic();
+  const { 
+    user, 
+    savedPosts, 
+    createdPosts, 
+    savedLoading,
+    createdLoading,
+    savedHasMore,
+    createdHasMore,
+    savedError,
+    createdError,
+    selectedOption, 
+    handleOptionChange
+  } = useProfilePageLogic();
   const [numColumns, setNumColumns] = useState(2);
 
   // Function to distribute posts across dynamic columns
@@ -61,36 +73,72 @@ export default function ProfilePage() {
   }, []);
 
   const displayCreatedPosts = () => {
-    if (createdPosts.length === 0) return <h3>Loading...</h3>;
+    if (createdLoading && createdPosts.length === 0) return <h3>Loading...</h3>;
+    if (createdPosts.length === 0) return <h3>No created posts found</h3>;
     
     const columns = distributePosts(createdPosts, numColumns);
     return (
-      <PostsContainer>
-        {columns.map((columnPosts, index) => (
-          <Column key={index}>
-            {columnPosts.map((item) => (
-              <Post item={item} key={uuidv4()} />
-            ))}
-          </Column>
-        ))}
-      </PostsContainer>
+      <>
+        <PostsContainer>
+          {columns.map((columnPosts, index) => (
+            <Column key={index}>
+              {columnPosts.map((item) => (
+                <Post item={item} key={uuidv4()} />
+              ))}
+            </Column>
+          ))}
+        </PostsContainer>
+        {createdLoading && createdPosts.length > 0 && (
+          <div style={{ textAlign: 'center', padding: '20px' }}>
+            <h4>Loading more posts...</h4>
+          </div>
+        )}
+        {!createdHasMore && createdPosts.length > 0 && (
+          <div style={{ textAlign: 'center', padding: '20px', color: '#666' }}>
+            <p>You've reached the end! No more posts to load.</p>
+          </div>
+        )}
+        {createdError && (
+          <div style={{ textAlign: 'center', padding: '20px', color: '#e74c3c' }}>
+            <p>Error loading posts: {createdError}</p>
+          </div>
+        )}
+      </>
     );
   };
 
   const displaySavedPosts = () => {
-    if (savedPosts.length === 0) return <h3>Loading...</h3>;
+    if (savedLoading && savedPosts.length === 0) return <h3>Loading...</h3>;
+    if (savedPosts.length === 0) return <h3>No saved posts found</h3>;
     
     const columns = distributePosts(savedPosts, numColumns);
     return (
-      <PostsContainer>
-        {columns.map((columnPosts, index) => (
-          <Column key={index}>
-            {columnPosts.map((item) => (
-              <Post item={item} key={uuidv4()} />
-            ))}
-          </Column>
-        ))}
-      </PostsContainer>
+      <>
+        <PostsContainer>
+          {columns.map((columnPosts, index) => (
+            <Column key={index}>
+              {columnPosts.map((item) => (
+                <Post item={item} key={uuidv4()} />
+              ))}
+            </Column>
+          ))}
+        </PostsContainer>
+        {savedLoading && savedPosts.length > 0 && (
+          <div style={{ textAlign: 'center', padding: '20px' }}>
+            <h4>Loading more posts...</h4>
+          </div>
+        )}
+        {!savedHasMore && savedPosts.length > 0 && (
+          <div style={{ textAlign: 'center', padding: '20px', color: '#666' }}>
+            <p>You've reached the end! No more posts to load.</p>
+          </div>
+        )}
+        {savedError && (
+          <div style={{ textAlign: 'center', padding: '20px', color: '#e74c3c' }}>
+            <p>Error loading posts: {savedError}</p>
+          </div>
+        )}
+      </>
     );
   };
 

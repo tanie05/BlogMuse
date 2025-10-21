@@ -7,24 +7,47 @@ const Post = require('../../models/PostModel');
 // MongoDB connection string - use the same as your application
 const MONGODB_URI = process.env.MONGO_URL || 'mongodb://localhost:27017/blogmuse';
 
-// Ensure we're using the same database name as the application (defaults to 'test' if not specified)
-const DB_NAME = 'test';
+// Ensure we're using the same database name as the application
+const DB_NAME = 'blogmuse';
 
-// Function to generate random cover image URL
-function generateCoverImage() {
-    const imageSizes = [
-        { width: 400, height: 300 }, // Landscape
-        { width: 300, height: 400 }, // Portrait
-        { width: 300, height: 300 }, // Square
-        { width: 500, height: 300 }, // Wide landscape
-        { width: 250, height: 400 }, // Tall portrait
-        { width: 400, height: 400 }, // Large square
-        { width: 600, height: 400 }, // Extra wide
-        { width: 350, height: 500 }, // Extra tall
+// Function to generate deterministic cover image URL using static images
+function generateCoverImage(postTitle, postIndex) {
+    const staticImages = [
+        'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=300&fit=crop&auto=format',
+        'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop&auto=format',
+        'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=300&fit=crop&auto=format',
+        'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=300&fit=crop&auto=format',
+        'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=400&h=300&fit=crop&auto=format',
+        'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=400&h=300&fit=crop&auto=format',
+        'https://images.unsplash.com/photo-1501594907352-04dda38d4e75?w=400&h=300&fit=crop&auto=format',
+        'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=400&h=300&fit=crop&auto=format',
+        'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&h=400&fit=crop&auto=format',
+        'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=300&h=400&fit=crop&auto=format',
+        'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=300&h=300&fit=crop&auto=format',
+        'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&h=300&fit=crop&auto=format',
+        'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=500&h=300&fit=crop&auto=format',
+        'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=500&h=300&fit=crop&auto=format',
+        'https://images.unsplash.com/photo-1501594907352-04dda38d4e75?w=250&h=400&fit=crop&auto=format',
+        'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=250&h=400&fit=crop&auto=format',
+        'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=400&fit=crop&auto=format',
+        'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop&auto=format',
+        'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=600&h=400&fit=crop&auto=format',
+        'https://images.unsplash.com/photo-1501594907352-04dda38d4e75?w=600&h=400&fit=crop&auto=format',
+        'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=350&h=500&fit=crop&auto=format',
+        'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=350&h=500&fit=crop&auto=format'
     ];
     
-    const randomSize = imageSizes[Math.floor(Math.random() * imageSizes.length)];
-    return `https://picsum.photos/${randomSize.width}/${randomSize.height}`;
+    // Use a simple hash of the post title to get a deterministic index
+    let hash = 0;
+    for (let i = 0; i < postTitle.length; i++) {
+        const char = postTitle.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash; // Convert to 32-bit integer
+    }
+    
+    // Use absolute value and modulo to get a valid index
+    const index = Math.abs(hash) % staticImages.length;
+    return staticImages[index];
 }
 
 // Function to validate JSON structure
@@ -89,8 +112,8 @@ async function seedUsers(usersData) {
             const { _id, ...userData } = user; // Remove _id field
             return {
                 ...userData,
-                profileImg: user.profileImg || 'https://picsum.photos/150/150',
-                coverImg: user.coverImg || 'https://picsum.photos/800/200'
+                profileImg: user.profileImg || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&auto=format',
+                coverImg: user.coverImg || 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=200&fit=crop&auto=format'
             };
         });
         
@@ -109,7 +132,7 @@ async function seedPosts(postsData, userMapping) {
         console.log('📝 Seeding posts...');
         
         // Add random cover images for posts and map author usernames to user IDs
-        const postsWithImages = postsData.map(post => {
+        const postsWithImages = postsData.map((post, index) => {
             const { _id, ...postData } = post; // Remove _id field
             
             // Find the user ID for the author username
@@ -122,7 +145,7 @@ async function seedPosts(postsData, userMapping) {
             return {
                 ...postData,
                 author: authorUserId, // Use the actual user ID instead of username
-                cover: post.cover || generateCoverImage()
+                cover: generateCoverImage(post.title, index)
             };
         }).filter(post => post !== null); // Remove null posts
         

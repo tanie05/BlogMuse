@@ -1,15 +1,53 @@
 const router = require('express').Router()
 const Post = require('../models/PostModel')
+const User = require('../models/UserModel')
 const { requiredSignIn, optionalAuth } = require('../authHelpers/authMiddleware')
 const { checkOwnership } = require('../middleware/authorize')
+
+// Helper function to populate author field with username
+const populateAuthorField = async (posts) => {
+    const mongoose = require('mongoose');
+    
+    for (let post of posts) {
+        // Check if author field is a valid ObjectId
+        if (mongoose.Types.ObjectId.isValid(post.author)) {
+            try {
+                const user = await User.findById(post.author);
+                if (user) {
+                    post.author = user.username;
+                }
+            } catch (err) {
+                console.log('Error fetching user for post author:', err);
+            }
+        }
+    }
+    return posts;
+};
 
 // View all posts (public route with optional auth)
 router.route('/').get(optionalAuth, async (req, res) => {
     try {
-        const posts = await Post.find().sort({ createdAt: -1 });
+        const limit = parseInt(req.query.limit) || 12;
+        const offset = parseInt(req.query.offset) || 0;
+
+        const posts = await Post.find()
+            .sort({ createdAt: -1 })
+            .skip(offset)
+            .limit(limit);
+
+        // Populate author field with username if it's an ID
+        const populatedPosts = await populateAuthorField(posts);
+
+        const totalPosts = await Post.countDocuments();
+        const hasMore = offset + limit < totalPosts;
+
         res.json({
             success: true,
-            posts
+            posts: populatedPosts,
+            hasMore,
+            totalPosts,
+            currentOffset: offset,
+            nextOffset: hasMore ? offset + limit : null
         });
     } catch (err) {
         console.log(err);
@@ -64,9 +102,12 @@ router.route('/:id').get(requiredSignIn, async (req, res) => {
             });
         }
         
+        // Populate author field with username if it's an ID
+        const populatedPosts = await populateAuthorField([post]);
+        
         res.json({
             success: true,
-            post
+            post: populatedPosts[0]
         });
     } catch (err) {
         console.log(err);
