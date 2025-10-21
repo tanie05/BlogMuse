@@ -3,109 +3,155 @@ import { Link } from 'react-router-dom';
 import { mobile } from '../../responsive';
 
 export const PostContainer = styled.div`
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid #f0f0f0;
+  width: 100%;
+  height: fit-content;
   display: flex;
-  padding: 30px;
-  font-family: 'Poppins', sans-serif;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  }
 
   ${mobile({
-    flexDirection: 'column',
-    padding: "0px",
-    margin: "0px",
+    width: "100%",
   })}
 `;
 
 export const Image = styled.img`
-  width: 250px;
+  width: 100%;
   height: 250px;
   object-fit: cover;
+  border-radius: 16px 16px 0 0;
 
   ${mobile({
-    width: '100%',
-    height: 'auto',
+    height: "200px",
   })}
 `;
 
 export const Written = styled.div`
+  padding: 30px;
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  
+  /* Add extra top padding when there's no image */
+  &:first-child {
+    padding-top: 40px;
+  }
+  
+  ${mobile({
+    padding: "20px",
+    "&:first-child": {
+      paddingTop: "30px"
+    }
+  })}
 `;
 
 export const Title = styled.h1`
   font-family: 'Libre Baskerville', serif;
-  margin: 10px 40px;
-  font-size: 58px;
-  height: 135px;
-  overflow: hidden;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 20px 0;
+  line-height: 1.4;
+  word-wrap: break-word;
+  hyphens: auto;
 
   ${mobile({
-    margin: "0",
-    fontSize: '25px',
-    height: 'auto',
-  })}
-`;
-
-export const Description = styled.div`
-  margin: 10px 40px;
-  font-size: 21px;
-  height: 50px;
-  overflow: hidden;
-
-  ${mobile({
-    margin: '0px',
-    fontSize: '12px',
-    height: '25px',
+    fontSize: "1.3rem",
+    margin: "0 0 15px 0",
   })}
 `;
 
 export const Author = styled(Link)`
-  margin: 10px 40px;
-  color: gray;
+  color: #1E594E;
   text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+  display: inline-block;
+  margin-bottom: 20px;
+  transition: color 0.3s ease;
 
-  ${mobile({
-    margin: '10px 0px',
-  })}
+  &:hover {
+    color: #F26B1D;
+  }
 `;
 
 export const Button = styled.button`
-  margin: 10px 40px;
-  font-size: 20px;
-  background-color: #0a4423;
+  background: #1E594E;
   color: white;
-  padding: 3px;
-  bottom: 0;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
   cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &:hover {
+    background: #F26B1D;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(242, 107, 29, 0.3);
+  }
 
   ${mobile({
-    margin: '5px',
-    fontSize: '10px',
-    padding: '2px',
+    padding: "10px 20px",
+    fontSize: "0.9rem",
   })}
 `;
 
 export const SaveButton = styled.button`
-  margin: 10px 40px;
-  font-size: 16px;
-  background-color: ${props => props.saved ? '#28a745' : '#6c757d'};
-  color: white;
-  padding: 5px 10px;
-  border: none;
-  border-radius: 4px;
+  background: ${props => props.saved ? '#1E594E' : '#F2F2F2'};
+  color: ${props => props.saved ? 'white' : '#666'};
+  border: 1px solid ${props => props.saved ? '#1E594E' : '#ddd'};
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 
   &:hover {
-    background-color: ${props => props.saved ? '#218838' : '#5a6268'};
+    background: ${props => props.saved ? '#F26B1D' : '#1E594E'};
+    color: white;
+    border-color: ${props => props.saved ? '#F26B1D' : '#1E594E'};
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 
   ${mobile({
-    margin: '5px',
-    fontSize: '12px',
-    padding: '3px 6px',
+    padding: "8px 16px",
+    fontSize: "0.8rem",
   })}
 `;
 
 export const ButtonContainer = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 15px;
   align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: auto;
+
+  ${mobile({
+    gap: "10px",
+    flexDirection: "column",
+    alignItems: "stretch",
+  })}
 `;
+

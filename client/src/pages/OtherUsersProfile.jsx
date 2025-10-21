@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { v4 as uuidv4 } from 'uuid'
 import Post from '../components/Post'
 import api from '../utils/api'
 import MainNav from '../components/MainNav'
@@ -9,6 +10,45 @@ import { useLocation } from 'react-router-dom';
 const Container = styled.div`
 
 `
+
+const PostsContainer = styled.div`
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  padding: 30px 50px;
+  max-width: 1400px;
+  margin: 0 auto;
+  
+  /* Responsive breakpoints */
+  @media (max-width: 1199px) {
+    max-width: 800px;
+  }
+  
+  @media (max-width: 799px) {
+    flex-direction: column;
+    padding: 20px 15px;
+    gap: 20px;
+    max-width: 400px;
+  }
+`;
+
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  flex: 1;
+  max-width: 350px;
+  min-width: 0; /* Prevents flex items from overflowing */
+  
+  @media (max-width: 1199px) {
+    max-width: 350px;
+  }
+  
+  @media (max-width: 799px) {
+    max-width: 100%;
+    gap: 20px;
+  }
+`;
 
 const SmallNav = styled.div`
   
@@ -89,6 +129,27 @@ export default function OtherUsersProfile() {
   const [savedPosts, setSavedPosts] = useState([]);
   const [user, setUser] = useState({});
   const [id,setId] = useState(0);
+  const [numColumns, setNumColumns] = useState(2);
+
+  // Function to distribute posts across dynamic columns
+  const distributePosts = (posts, numColumns) => {
+    const columns = Array.from({ length: numColumns }, () => []);
+    posts.forEach((post, index) => {
+      columns[index % numColumns].push(post);
+    });
+    return columns;
+  };
+
+  // Get number of columns based on screen size
+  const getColumnCount = () => {
+    if (typeof window !== 'undefined') {
+      const width = window.innerWidth;
+      if (width >= 1200) return 3;
+      if (width >= 800) return 2;
+      return 1;
+    }
+    return 2; // Default fallback
+  };
 
   function fetchingPost() {
 
@@ -117,20 +178,60 @@ export default function OtherUsersProfile() {
     })
     .catch(err => console.log(err))
       }, [id])
-  
+
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      setNumColumns(getColumnCount());
+    };
+
+    // Set initial column count
+    setNumColumns(getColumnCount());
+
+    // Add resize listener
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleOptionChange = (option) => {
     setSelectedOption(option);
   };
-   
 
-  const displayCreatedPosts = createdPosts.map((item) => {
-    return <Post item = {item} key = {item._id} />
-  })
-  const displaySavedPosts = savedPosts.map((item) => {
-    return <Post item = {item} key = {item._id}/>
-  }
-  )
+  const displayCreatedPosts = () => {
+    if (createdPosts.length === 0) return <h3>Loading...</h3>;
+    
+    const columns = distributePosts(createdPosts, numColumns);
+    return (
+      <PostsContainer>
+        {columns.map((columnPosts, index) => (
+          <Column key={index}>
+            {columnPosts.map((item) => (
+              <Post item={item} key={uuidv4()} />
+            ))}
+          </Column>
+        ))}
+      </PostsContainer>
+    );
+  };
+
+  const displaySavedPosts = () => {
+    if (savedPosts.length === 0) return <h3>Loading...</h3>;
+    
+    const columns = distributePosts(savedPosts, numColumns);
+    return (
+      <PostsContainer>
+        {columns.map((columnPosts, index) => (
+          <Column key={index}>
+            {columnPosts.map((item) => (
+              <Post item={item} key={uuidv4()} />
+            ))}
+          </Column>
+        ))}
+      </PostsContainer>
+    );
+  };
   
 
   return (
@@ -151,7 +252,7 @@ export default function OtherUsersProfile() {
           Saved
       </OptionButton>
         </SmallNav>
-        {selectedOption === 'created' ? displayCreatedPosts : displaySavedPosts}
+        {selectedOption === 'created' ? displayCreatedPosts() : displaySavedPosts()}
       </Container>
     </div>
   )
